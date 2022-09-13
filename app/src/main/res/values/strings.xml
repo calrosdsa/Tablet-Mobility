@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Teclu Mobility</string>
+    <string name="title_activity_access">AccessActivity</string>
+    <string name="title_activity_access_compoat">AccessActivityCompoat</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="btnMainIngreso">Ingreso</string>
+    <string name="btnMainSalida">Salida</string>
+    <string name="btnMainMoreActions">Configuraciones</string>
+    <string name="txtMainServerState">Conectado al Servidor</string>
+    <string name="txtWaitingWait">Esperando Identificación</string>
+    <string name="txtAccessName">PATRICK ADRIAN GÓMEZ</string>
+    <string name="txtAccessCard">Tarjeta</string>
+    <string name="txtAccessCompany">Empresa</string>
+    <string name="txtAccessID">C.I.</string>
+    <string name="txtAccessCardNumber">5416777</string>
+    <string name="txtAccessCompanyName">ANDINA</string>
+    <string name="txtAccessIDNumber">5416777</string>
+    <string name="txtAccessGrant">Acceso Permitido</string>
+    <string name="imgAccessPersonal">User image</string>
+    <string name="txtAccessInformation"><![CDATA[<-- Volver a menú]]></string>
+    <string name="txtConfigurationInformation"><![CDATA[<-- Volver a menú]]></string>
+    <string name="txtAccessInformation2"><![CDATA[<-- Volver a Ciudades]]></string>
+    <string name="txtAccessInformation3"><![CDATA[<-- Volver a Mustering]]></string>
+    <string name="txtConfigurationGPS">Intervalo GPS:</string>
+    <string name="txtConfigurationTiempo">Tiempo de Sincronización</string>
+    <string name="txtConfigurationUltimos">Ultimos Eventos</string>
+    <string name="txtConfigurationSeg1">(En segundos)</string>
+    <string name="txtConfigurationSeg2">(En segundos)</string>
+    <string name="txtConfigurationMetodo">Método de conexión</string>
+    <string name="txtConfigurationServidor">Dirección de Servidor:</string>
+    <string name="txtConfigurationControladora">Dirección de Controladora:</string>
+    <string name="btnConfigurationSincronizar">Re-Sincronizar</string>
+    <string name="btnConfigurationGuardar">Guardar</string>
+    <string name="title_activity_mustering">Mustering</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_waiting">WaitingActivity</string>
+</resources>

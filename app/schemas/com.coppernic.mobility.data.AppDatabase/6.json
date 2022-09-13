@@ -1,0 +1,332 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 6,
+    "identityHash": "8e54e9b7851ff1b2a63361d4b4f9ab97",
+    "entities": [
+      {
+        "tableName": "config",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `url_servidor` TEXT, `url_controladora` TEXT, `coordenada` TEXT NOT NULL, `ciudades` TEXT NOT NULL, `interfaz` TEXT, `zonaHoraria` TEXT, `zonaPoligono` TEXT, `riouser` TEXT, `riopass` TEXT, `localePass` TEXT, `imei` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url_servidor",
+            "columnName": "url_servidor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "url_controladora",
+            "columnName": "url_controladora",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coordenada",
+            "columnName": "coordenada",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ciudades",
+            "columnName": "ciudades",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "interfaz",
+            "columnName": "interfaz",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "zonaHoraria",
+            "columnName": "zonaHoraria",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "zonaPoligono",
+            "columnName": "zonaPoligono",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "riouser",
+            "columnName": "riouser",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "riopass",
+            "columnName": "riopass",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "localePass",
+            "columnName": "localePass",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imei",
+            "columnName": "imei",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "cardholder",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `ci` TEXT, `descriptions` TEXT, `empresa` TEXT, `estado` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guid",
+            "columnName": "guid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ci",
+            "columnName": "ci",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "descriptions",
+            "columnName": "descriptions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "empresa",
+            "columnName": "empresa",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "credential",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `guidCardHolder` TEXT, `cardNumber` INTEGER, `facilityCode` INTEGER, `uniqueId` TEXT, `estado` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guid",
+            "columnName": "guid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guidCardHolder",
+            "columnName": "guidCardHolder",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cardNumber",
+            "columnName": "cardNumber",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "facilityCode",
+            "columnName": "facilityCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "uniqueId",
+            "columnName": "uniqueId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "marcacion",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fecha` INTEGER NOT NULL, `date` TEXT NOT NULL, `cardCode` TEXT NOT NULL, `tipoMarcacion` TEXT, `acceso` TEXT, `guidUser` TEXT, `estado` TEXT NOT NULL, `nroTarjeta` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fecha",
+            "columnName": "fecha",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cardCode",
+            "columnName": "cardCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoMarcacion",
+            "columnName": "tipoMarcacion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "acceso",
+            "columnName": "acceso",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "guidUser",
+            "columnName": "guidUser",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroTarjeta",
+            "columnName": "nroTarjeta",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ciudad",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `nombre` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "image_user",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userGui` TEXT NOT NULL, `picture` BLOB, `nombre` TEXT, PRIMARY KEY(`userGui`))",
+        "fields": [
+          {
+            "fieldPath": "userGui",
+            "columnName": "userGui",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "picture",
+            "columnName": "picture",
+            "affinity": "BLOB",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "userGui"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8e54e9b7851ff1b2a63361d4b4f9ab97')"
+    ]
+  }
+}

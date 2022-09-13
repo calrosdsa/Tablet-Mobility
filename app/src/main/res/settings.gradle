@@ -1,0 +1,16 @@
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+//        mavenCentral()
+        mavenCentral() // Warning: this repository is going to shut down soon
+        maven { url "https://nexus.coppernic.fr/repository/libs-release" }
+//        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }4.0.0
+        maven { url 'https://jitpack.io' }
+    }
+}
+rootProject.name = "Teclu Mobility"
+include ':app'
+//include ':benchmark'
+include ':benchmark'
