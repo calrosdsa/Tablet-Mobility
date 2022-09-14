@@ -45,11 +45,11 @@ class CiudadesVIiewModel @Inject constructor(
                 }catch (e:Throwable){
                     this@CiudadesVIiewModel.ciudades.emit(emptyList())
 //                    if(ciudades.value.isEmpty())  UiMessage(message = "No hay datos disponibles")
-//                    uiMessageManager.emitMessage(
+                    uiMessageManager.emitMessage(
                         UiMessage(
                             message = (e.localizedMessage?: "Un error Inesperado")
                         )
-//                    )
+                    )
                 }
         }
     }

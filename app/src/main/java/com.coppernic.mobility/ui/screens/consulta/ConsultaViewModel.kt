@@ -12,8 +12,6 @@ import com.coppernic.mobility.data.models.dao.CredentialDao
 import com.coppernic.mobility.data.models.dao.ImageDao
 import com.coppernic.mobility.domain.util.UiMessage
 import com.coppernic.mobility.domain.util.UiMessageManager
-import com.coppernic.mobility.rfid.Hid
-import com.coppernic.mobility.rfid.RfidListener
 import com.coppernic.mobility.ui.screens.waiting.AccessPerson
 import com.coppernic.mobility.ui.screens.waiting.AccessState
 import com.coppernic.mobility.util.Access
@@ -21,7 +19,6 @@ import com.coppernic.mobility.util.constants.Params
 import com.coppernic.mobility.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fr.coppernic.sdk.hid.iclassProx.Card
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -31,33 +28,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConsultaViewModel @Inject constructor(
-        private val presenter : Hid,
         savedStateHandle: SavedStateHandle,
         private val cardholderDao: CardholderDao,
         private val credentialDao: CredentialDao,
         private val imageDao: ImageDao,
         @ApplicationContext private val context: Context,
-    ): ViewModel(), RfidListener {
+    ): ViewModel() {
         private val typeAccess = savedStateHandle.get<String>(Params.TYPE_ACCESS_PARAM)
         private val facilityCodeP = savedStateHandle.get<String>(Params.FACILITY_CODE_P)
         private val cardNumberP = savedStateHandle.get<String>(Params.CARD_NUMBER_P)
         private val uiMessageManager = UiMessageManager()
-        //    val presenterV = presenter
-//    private val facilityCode = MutableStateFlow<Int?>(null)
-//    private val cardNumer = MutableStateFlow<Int?>(null)
         private val userChoices = MutableStateFlow<String?>(null)
         private val accessPerson = MutableStateFlow(AccessPerson())
+    private val binaryCode = MutableStateFlow<String?>(null)
 
         val state: StateFlow<AccessState> = combine(
             accessPerson,
             userChoices,
-            uiMessageManager.message
-        ){accessPerson,userChoice, message->
+            uiMessageManager.message,
+            binaryCode
+        ){accessPerson,userChoice, message, binaryCode->
             AccessState(
                 personAccess = accessPerson,
                 userChoice = userChoice,
-                message = message
-
+                message = message,
+                binaryCode = binaryCode
             )
         }.stateIn(
             scope = viewModelScope,
@@ -84,13 +79,22 @@ class ConsultaViewModel @Inject constructor(
                         accessPerson.emit(AccessPerson())
                     }
             }
+            viewModelScope.launch {
+                binaryCode.collect{
+                    if (it != null) {
+                        checkValidation(facilityCode = 213, cardNumber = it.toInt(2))
+                        this@ConsultaViewModel.binaryCode.emit(null)
+                    }
+                }
+            }
         }
+    fun getCode(code:String){
+        val cardCode = code.substring(12).dropLast(2)
+        viewModelScope.launch {
+            this@ConsultaViewModel.binaryCode.emit(cardCode)
+        }
+    }
 
-        override fun cardReaded(card: Card) {
-            //Tarjeta = cardNumber
-            Log.d("ACCESS_STATE",card.toString())
-            checkValidation(card.facilityCode,card.cardNumber)
-        }
 
         fun checkValidation(facilityCode:Int,cardNumber:Int) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -176,26 +180,6 @@ class ConsultaViewModel @Inject constructor(
             }
         }
 
-        fun onResume(){
-            presenter.subscribe(this)
-        }
-
-        fun onStart(){
-            presenter.read()
-//        Toast.makeText(context, "acerque la tarjeta para leer", Toast.LENGTH_SHORT).show()
-        }
-
-        fun onStop(){
-            presenter.unsubscribe(this)
-
-        }
-        override fun showWaiting() {
-//        Toast.makeText(context, "En espera", Toast.LENGTH_SHORT).show()
-        }
-
-        override fun showError(message: String) {
-//        Toast.makeText(context, "Un error a ocurrido", Toast.LENGTH_SHORT).show()
-        }
 
         private fun playSound(entra: Boolean) {
             try {

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.coppernic.mobility.ui.components.TopBarComponent
+import com.coppernic.mobility.ui.components.VerticalGrid
 import com.coppernic.mobility.ui.rememberStateWithLifecycle
 import com.coppernic.mobility.util.constants.MainDestination
 import kotlinx.coroutines.launch
@@ -75,8 +76,9 @@ fun MusteringScreen(
                     }
                     Divider()
                     Column(
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                            .pointerInput(Unit){
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .pointerInput(Unit) {
                                 detectTapGestures {
                                     activeValue.value = -1
                                 }
@@ -92,13 +94,12 @@ fun MusteringScreen(
                                 .background(MaterialTheme.colors.primary)
                                 .clip(MaterialTheme.shapes.large)
                         )
-                        Spacer(modifier = Modifier.height(10.dp))
                         if (seguros != null && inseguros != null) {
                             PieChart(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(220.dp)
-                                    .padding(horizontal = 65.dp),
+                                    .padding(horizontal = 80.dp),
 //                                .align(Alignment.CenterStart),
                                 progress = listOf(seguros.value, inseguros.value),
                                 colors = listOf(Color.Red, Color(0xFF00C853)),
@@ -108,7 +109,7 @@ fun MusteringScreen(
                                 activeValue = activeValue
                             )
                         }
-                        Spacer(modifier = Modifier.height(15.dp))
+                        Spacer(modifier = Modifier.height(5.dp))
                         Column(horizontalAlignment = Alignment.Start) {
                             Row(
                                 modifier = Modifier
@@ -120,7 +121,7 @@ fun MusteringScreen(
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier
-                                            .padding(16.dp)
+                                            .padding(20.dp)
                                             .clickable {
                                                 navController.navigate(MainDestination.ESTADO_PERSON + "?estado=0&ciudadId=${viewModel.ciudadId}")
                                             }
@@ -147,7 +148,8 @@ fun MusteringScreen(
                                 Card(elevation = 5.dp) {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier.padding(20.dp)
+                                        modifier = Modifier
+                                            .padding(20.dp)
                                             .clickable {
                                                 navController.navigate(MainDestination.ESTADO_PERSON + "?estado=1&ciudadId=${viewModel.ciudadId}")
                                             }
@@ -174,7 +176,7 @@ fun MusteringScreen(
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         Text(text = "Zonas", style = MaterialTheme.typography.h5)
                         Divider(
                             Modifier
@@ -183,11 +185,14 @@ fun MusteringScreen(
                                 .background(MaterialTheme.colors.primary)
                                 .clip(MaterialTheme.shapes.large)
                         )
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        VerticalGrid(columns = 2) {
                         result.zonas.map {
                             Card(elevation = 5.dp, modifier = Modifier
                                 .height(200.dp)
                                 .width(200.dp)
+                                .padding(10.dp)
                                 .clickable {
                                     navController.navigate(MainDestination.MUSTERONG_ZONE + "?zoneId=${it.id}&ciudadId=${viewModel.ciudadId}")
                                 }
@@ -216,11 +221,10 @@ fun MusteringScreen(
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
+                        }
                         }
                     }
                 }
-
                 if (result.zonas.isEmpty()) {
                     Text(
                         text = "No hay Datos disponibles",

@@ -1,6 +1,5 @@
 package com.coppernic.mobility.ui.components
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,7 +28,6 @@ import kotlinx.coroutines.launch
 fun DrawerContentScreen(
     navController: NavController,
     scaffoldState: ScaffoldState,
-    currentSelected: String,
     passwordPref:String
 ) {
     val coroutine = rememberCoroutineScope()
@@ -61,7 +58,6 @@ fun DrawerContentScreen(
         navigationItems.forEachIndexed() {index,it->
             RowIconItem(
                 item = it,
-                selected = currentSelected == it.screen,
                 navigateTo = {
                     if(index != 5){
                     navController.navigate(it.screen){
@@ -169,11 +165,9 @@ fun DrawerContentScreen(
 @Composable
 fun RowIconItem(
         item: HomeNavigationItem.ImageVectorIcon,
-        selected: Boolean,
         navigateTo:()->Unit
     ) {
-        val painter = rememberVectorPainter(image = item.iconImageVector)
-        val selectPainter = item.selectedImageVector?.let { rememberVectorPainter(image = it) }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -184,21 +178,11 @@ fun RowIconItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (selectPainter != null) {
-                    Crossfade(targetState = selected) {
-                        Icon(
-                            painter = if (it) selectPainter else painter,
-                            contentDescription = item.title,
-                            modifier = Modifier.size(31.dp),
-//                            tint = MaterialTheme.colors.secondary
-                        )
-                    }
-                } else {
-                    Icon(painter = painter, contentDescription = item.title,
+
+                    Icon(imageVector = item.iconImageVector, contentDescription = item.title,
                     modifier = Modifier.size(31.dp)
 //                        tint = MaterialTheme.colors.secondary
                     )
-                }
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(text = item.title, style = MaterialTheme.typography.subtitle1)
             }

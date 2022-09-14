@@ -53,11 +53,7 @@ fun MarkedsScreen(
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val lazyState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
-    val showIconUp = remember {
-        derivedStateOf {
-            lazyState.firstVisibleItemIndex == 4
-        }
-    }
+
     val setSorted = remember {
         mutableStateOf(false)
     }
@@ -134,7 +130,6 @@ fun MarkedsScreen(
                 Divider()
             },
             floatingActionButton = {
-                AnimatedVisibility(visible = showIconUp.value) {
                 FloatingActionButton(onClick = {
                     coroutine.launch {
                         lazyState.scrollToItem(0)
@@ -145,7 +140,6 @@ fun MarkedsScreen(
                             contentDescription = " Ascending "
                         )
                     }
-                }
             }
         ) {padding->
             Column(modifier = Modifier.fillMaxSize().padding(padding)) {

@@ -90,8 +90,8 @@ class WaitingViewModel @Inject constructor(
                 }
             }
     fun getCode(code:String){
-        viewModelScope.launch {
          val cardCode = code.substring(12).dropLast(2)
+        viewModelScope.launch {
             this@WaitingViewModel.binaryCode.emit(cardCode)
         }
     }

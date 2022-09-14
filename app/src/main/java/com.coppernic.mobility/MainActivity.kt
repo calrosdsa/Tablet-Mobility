@@ -13,15 +13,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.coppernic.mobility.domain.util.AppDateFormatter
-import com.coppernic.mobility.rfid.Hid
-import com.coppernic.mobility.rfid.RfidListener
 import com.coppernic.mobility.ui.Home
 import com.coppernic.mobility.ui.LocalAppDateFormatter
 import com.coppernic.mobility.ui.theme.TecluMobilityTheme
 import com.coppernic.mobility.util.interfaces.AppPreferences
 import com.coppernic.mobility.util.interfaces.AppTasks
 import dagger.hilt.android.AndroidEntryPoint
-import fr.coppernic.sdk.hid.iclassProx.Card
 import javax.inject.Inject
 
 @AndroidEntryPoint

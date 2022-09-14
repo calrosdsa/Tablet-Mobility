@@ -24,8 +24,7 @@ fun Home(
     Scaffold(
         scaffoldState = state,
         drawerContent = {
-            val selectedRoute by navController.currentScreenAsState()
-            DrawerContentScreen(navController = navController, scaffoldState =state,selectedRoute,password)
+            DrawerContentScreen(navController = navController, scaffoldState =state,password)
         },
         drawerGesturesEnabled = false
     ) {

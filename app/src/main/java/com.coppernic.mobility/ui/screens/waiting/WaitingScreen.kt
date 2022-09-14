@@ -160,7 +160,7 @@ fun WaitingScreen(
                                 )
                                 if (it.picture == null) {
                                     Image(
-                                        painter = painterResource(id = R.drawable.profile),
+                                        painter = painterResource(id = R.drawable.profile_image),
                                         contentDescription = "AccessProfile",
                                         modifier = Modifier
                                             .size(250.dp)
