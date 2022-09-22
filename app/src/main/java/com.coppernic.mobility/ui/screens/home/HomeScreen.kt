@@ -48,7 +48,7 @@ fun HomeScreen(
 //        }
 //    }
 
-    LaunchedEffect(key1 = Unit, block = {
+    LaunchedEffect(key1 = Unit, key2 = state.loading, block = {
         viewModel.getMarcarcaionCount()
     })
 
@@ -112,20 +112,14 @@ fun HomeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-//                Button(onClick = { viewModel.updateCardHolders() }) {
-//                    Text(text = "Card Holders")
-//                }
-//                Button(onClick = { viewModel.updateCredentials() }) {
-//                    Text(text = "Credentials")
-//                }
                 Spacer(modifier = Modifier.height(10.dp))
                 Image(
-                    painter = painterResource(id = R.drawable.ypfb_logo),
+                    painter = painterResource(id = R.drawable.logo),
                     contentDescription = "main_logo",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .fillMaxWidth(0.70f)
-                        .height(150.dp)
+                        .fillMaxWidth(0.80f)
+                        .height(140.dp)
                 )
 //                    Spacer(modifier = Modifier.height(40.dp))
                 Row(

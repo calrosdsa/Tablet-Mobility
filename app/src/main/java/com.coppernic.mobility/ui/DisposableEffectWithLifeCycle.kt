@@ -31,7 +31,6 @@ fun DisposableEffectWithLifeCycle(
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_CREATE -> {
-
                 }
                 Lifecycle.Event.ON_START -> {
                 }
@@ -39,10 +38,9 @@ fun DisposableEffectWithLifeCycle(
                     currentOnResume()
                 }
                 Lifecycle.Event.ON_PAUSE -> {
-                    currentOnPause()
                 }
                 Lifecycle.Event.ON_STOP -> {
-
+                    currentOnPause()
                 }
                 Lifecycle.Event.ON_DESTROY -> {
 

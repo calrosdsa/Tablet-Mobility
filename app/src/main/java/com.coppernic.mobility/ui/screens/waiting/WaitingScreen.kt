@@ -1,5 +1,6 @@
 package com.coppernic.mobility.ui.screens.waiting
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -15,6 +16,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +30,8 @@ import com.coppernic.mobility.ui.components.VerticalGrid
 import com.coppernic.mobility.ui.rememberStateWithLifecycle
 import com.coppernic.mobility.util.constants.MainDestination
 import com.coppernic.mobility.R
+import com.coppernic.mobility.util.constants.Params
+import kotlinx.coroutines.delay
 
 @Composable
 fun WaitingScreen(
@@ -37,26 +41,33 @@ fun WaitingScreen(
 ) {
     val state by rememberStateWithLifecycle(stateFlow = viewModel.state)
     val focusRequester = remember { FocusRequester() }
+//    val focus = LocalFocusManager.current
     state.message?.let { message ->
         LaunchedEffect(key1 = message, block = {
             scaffoldState.snackbarHostState.showSnackbar(message.message)
             viewModel.clearMessage(message.id)
-
         })
     }
-    LaunchedEffect(key1 = Unit, block = {
-        focusRequester.requestFocus()
-    })
-    var valueText by remember {
+
+//   DisposableEffectWithLifeCycle(onResume = {
+//       focusRequester.requestFocus()
+//   }) {
+//       focus.clearFocus()
+//   }
+    val valueText = remember {
         mutableStateOf("")
     }
-    LaunchedEffect(key1 = valueText, block = {
-        if(valueText.length == 30){
-            viewModel.getCode(valueText)
-            valueText = ""
-
+    LaunchedEffect(key1 = valueText.value, block = {
+        if(valueText.value.length == 30){
+            viewModel.getCode(valueText.value,valueText)
+//            valueText.value = ""
         }
     })
+//    state.binaryCode?.let {
+//    LaunchedEffect(key1 = it, block = {
+//        valueText.value = ""
+//    })
+//    }
 
     BackHandler {
         if (state.personAccess?.accessState != null) {
@@ -80,21 +91,20 @@ fun WaitingScreen(
     CompositionLocalProvider(
         LocalTextInputService provides null
     ) {
-        Scaffold() { padding ->
-        TextField(value = valueText, onValueChange = {
-            valueText = it
-        },modifier = Modifier
-            .focusRequester(focusRequester)
-            .alpha(0f)
-        )
             Column(
                 modifier = Modifier
-                    .padding(padding)
                     .fillMaxSize()
                     .background(
                         state.personAccess?.stateBackGround ?: MaterialTheme.colors.background
                     )
             ) {
+        TextField(value = valueText.value, onValueChange = {
+            valueText.value = it
+        }, modifier = Modifier
+            .focusRequester(focusRequester)
+            .alpha(0f)
+            .size(0.dp)
+        )
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "icon_back_")
                 }
@@ -130,7 +140,7 @@ fun WaitingScreen(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Button(onClick = {
-                            navController.navigate(MainDestination.MANUAL_ROUTE + "/${state.userChoice}") {
+                            navController.navigate(MainDestination.MANUAL_ROUTE + "?${Params.TYPE_ACCESS_PARAM}=${state.userChoice}") {
                                 launchSingleTop = true
                             }
 //           viewModel.setAccessPerson()
@@ -235,6 +245,11 @@ fun WaitingScreen(
                     }
                 }
             }
-        }
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+//        Log.d("REQUEST_","TRUE")
+    }
     }
 }
+
+

@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,10 +57,7 @@ class MainActivity : ComponentActivity() {
             Manifest.permission.READ_PHONE_STATE))
         appTasks.sendMarcaciones()
     }
-    @SuppressLint("SetTextI18n")
-    override fun onResume() {
-        super.onResume()
-        }
+
     override fun onDestroy() {
         super.onDestroy()
         appTasks.mainTask()
@@ -69,5 +65,7 @@ class MainActivity : ComponentActivity() {
 
 
 }
+
+
 
 const val TAG_D = "DEBUG_LOG"

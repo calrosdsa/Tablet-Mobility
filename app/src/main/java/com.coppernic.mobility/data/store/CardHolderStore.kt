@@ -13,6 +13,7 @@ import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.coppernic.mobility.data.result.mapper.toCardHolderEntity
+import com.coppernic.mobility.util.interfaces.AppPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +27,6 @@ typealias CardHolderStore = Store<Unit, List<Cardholder>>
 @InstallIn(SingletonComponent::class)
 @Module
 object CardHolderModule{
-
     @SuppressLint("SuspiciousIndentation")
     @Provides
     @Singleton
@@ -34,6 +34,7 @@ object CardHolderModule{
         apiService: ApiService,
         cardholderDao: CardholderDao,
         appUtil: AppUtil,
+        appPreferences: AppPreferences,
         imageDao: ImageDao,
         @ApplicationContext context:Context
     ):CardHolderStore = StoreBuilder.from(
@@ -58,7 +59,7 @@ object CardHolderModule{
                  imageDao.insert(ImageUser(
                      userGui = it.guid,
                      nombre = "${it.firstName}  ${it.lastName}",
-                     picture =  appUtil.getImageBitmap(context,"http://172.20.10.55:91/imagenes/${it.picture}"),
+                     picture =  appUtil.getImageBitmap(context,"${appPreferences.urlServidor}/imagenes/${it.picture}"),
                  ))
                  }catch (e:Throwable){
                      imageDao.insert(ImageUser(

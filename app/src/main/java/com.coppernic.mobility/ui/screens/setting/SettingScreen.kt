@@ -88,6 +88,8 @@ fun SettingScreen(
                 }
             }
             Column(modifier = Modifier.padding(15.dp)) {
+
+                Spacer(modifier = Modifier.height(5.dp))
                 state.settingState?.let {
 
                     Spacer(modifier = Modifier.height(5.dp))
@@ -122,32 +124,30 @@ fun SettingScreen(
                         modifier = Modifier.offset(y = 15.dp)
                     )
 //                Spacer(modifier = Modifier.height(15.dp))
-                    TransparentTextField(
-                        textFieldValue = urlServidor,
-                        textLabel = "",
-                        keyboardType = KeyboardType.Text,
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focus.clearFocus()
-                            }
-                        ),
-                        imeAction = ImeAction.Done
-                    )
-
-
-                    Spacer(modifier = Modifier.height(15.dp))
-                    TransparentTextField(
-                        textFieldValue = password,
-                        textLabel = "Nueva Contraseña",
-                        keyboardType = KeyboardType.Text,
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focus.clearFocus()
-                            }
-                        ),
-                        imeAction = ImeAction.Done
-                    )
+                Spacer(modifier = Modifier.height(15.dp))
+                TransparentTextField(
+                    textFieldValue = password,
+                    textLabel = "Nueva Contraseña",
+                    keyboardType = KeyboardType.Text,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focus.clearFocus()
+                        }
+                    ),
+                    imeAction = ImeAction.Done
+                )
                 }
+                TransparentTextField(
+                    textFieldValue = urlServidor,
+                    textLabel = "",
+                    keyboardType = KeyboardType.Text,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focus.clearFocus()
+                        }
+                    ),
+                    imeAction = ImeAction.Done
+                )
             }
         }
     }

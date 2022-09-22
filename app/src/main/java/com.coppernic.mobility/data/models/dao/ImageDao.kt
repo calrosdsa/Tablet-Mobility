@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
-    @Transaction
-    @Query("SELECT * FROM image_user")
-    fun getCardCredentials(): Flow<List<CredentialCard>>
+//    @Transaction
+//    @Query("SELECT * FROM image_user")
+//    fun getCardCredentials(): Flow<List<CredentialCard>>
 
     @Transaction
     @Query("SELECT * FROM marcacion ORDER BY fecha DESC")
@@ -32,8 +32,8 @@ interface ImageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(imageUser: ImageUser)
-
-
+    @Query("DELETE  FROM image_user")
+    suspend fun  deleteAllImages()
 
     @Transaction
     @Query("""
@@ -62,7 +62,8 @@ interface ImageDao {
     @Transaction
     @Query("""
           SELECT * 
-            FROM image_user
+            FROM credential 
+            INNER JOIN image_user AS image ON credential.guidCardHolder  = image.userGui
             WHERE LOWER(nombre) LIKE '%' || LOWER(:query) || '%' OR
                 UPPER(:query) == nombre  LIMIT :limit OFFSET :offset
     """)

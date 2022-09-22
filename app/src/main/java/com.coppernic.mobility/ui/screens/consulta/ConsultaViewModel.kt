@@ -3,6 +3,7 @@ package com.coppernic.mobility.ui.screens.consulta
 import android.content.Context
 import android.media.MediaPlayer
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -83,20 +84,25 @@ class ConsultaViewModel @Inject constructor(
                 binaryCode.collect{
                     if (it != null) {
                         checkValidation(facilityCode = 213, cardNumber = it.toInt(2))
-                        this@ConsultaViewModel.binaryCode.emit(null)
                     }
+                    this@ConsultaViewModel.binaryCode.emit(null)
                 }
             }
         }
-    fun getCode(code:String){
+    fun getCode(code:String,valueText: MutableState<String>) {
         val cardCode = code.substring(12).dropLast(2)
         viewModelScope.launch {
-            this@ConsultaViewModel.binaryCode.emit(cardCode)
+            if(cardCode.toBigIntegerOrNull() != null){
+                this@ConsultaViewModel.binaryCode.emit(cardCode)
+                valueText.value = ""
+            }else{
+                delay(1800)
+                valueText.value = ""
+                uiMessageManager.emitMessage(UiMessage("Lectura incorrecta vuelva a escanear la tarjeta"))
+            }
         }
     }
-
-
-        fun checkValidation(facilityCode:Int,cardNumber:Int) {
+    fun checkValidation(facilityCode:Int,cardNumber:Int) {
             viewModelScope.launch(Dispatchers.IO) {
                 val credential = credentialDao.getCredentialByNumber(facilityCode, cardNumber)
                 val cardHolder = credential?.guidCardHolder?.let { cardholderDao.getCardholderByGuid(it) }
@@ -130,7 +136,7 @@ class ConsultaViewModel @Inject constructor(
                 }.collect {
                     when (it) {
                         is Access.Accepted -> {
-//                        playSound(true)
+                        playSound(true)
                             this@ConsultaViewModel.accessPerson.emit(
                                 AccessPerson(
                                     personName = imageUser?.nombre,

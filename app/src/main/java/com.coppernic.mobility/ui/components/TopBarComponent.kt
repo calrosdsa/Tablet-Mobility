@@ -43,7 +43,7 @@ fun TopBar(
                     badge = { Badge{ Text(text = marcacionesCount.toString()) }
                     },
                 ) {
-                    Icon(imageVector = Icons.Default.CreditCard, contentDescription = "refresh_icon",
+                    Icon(imageVector = Icons.Default.CardMembership , contentDescription = "refresh_icon",
                         modifier = Modifier
                             .size(30.dp)
                             .zIndex(0f))

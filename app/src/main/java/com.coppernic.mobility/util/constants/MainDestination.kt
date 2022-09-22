@@ -16,5 +16,6 @@ object MainDestination {
    const val SPLASH_SCREEN = "splash_screen"
    const val CONSULTA_SCREEN = "consulta_screen"
    const val ESTADO_PERSON = "estado_person_route"
-
+   const val  CAMERA_SCREEN = "cameraScreen"
+   const val QR_SCREEN = "qr_screen"
 }

@@ -26,6 +26,7 @@ class ManualMarkerViewModel @Inject constructor(
     val pagingItems = observerCardCredential.flow.cachedIn(viewModelScope)
     val query = MutableStateFlow("")
     private val userChoice = savedStateHandle.get<String>(Params.TYPE_ACCESS_PARAM)
+    private val isConsulta = savedStateHandle.get<String>(Params.IS_CONSULTA)
 //    val state:StateFlow<ManualMarkerState> = combine(
 //        query,
 //        observerCardCredential.flow.debounce(400) ,
@@ -63,6 +64,16 @@ class ManualMarkerViewModel @Inject constructor(
     }
 
     fun sendManualConfirmation(cardCredential: Credential, navController: NavController){
+        if(isConsulta == "0"){
+            navController.navigate(MainDestination.CONSULTA_SCREEN + "?${Params.TYPE_ACCESS_PARAM}=${userChoice}" +
+                    "&facility_code=${cardCredential.facilityCode}&card_number=${cardCredential.cardNumber}"
+            ){
+//             popUpTo(573383227)
+                popUpTo(-240764362)
+//             popUpTo(1665011537)
+            }
+        }else{
+
          navController.navigate(MainDestination.WAITING_SCREEN + "?${Params.TYPE_ACCESS_PARAM}=${userChoice}" +
                  "&facility_code=${cardCredential.facilityCode}&card_number=${cardCredential.cardNumber}"
          ){
@@ -70,6 +81,7 @@ class ManualMarkerViewModel @Inject constructor(
              popUpTo(-240764362)
 //             popUpTo(1665011537)
          }
+        }
     }
 
     fun search(searchTerm: String) {

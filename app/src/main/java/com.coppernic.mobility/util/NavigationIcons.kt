@@ -24,15 +24,9 @@ val navigationItems = listOf(
         iconImageVector = Icons.Outlined.Home,
     ),
     HomeNavigationItem.ImageVectorIcon(
-//        screen = MainDestination.CIUDADES_SCREEN,
-        screen = MainDestination.CIUDADES_SCREEN,
-        title = "Mustering",
-        iconImageVector = Icons.Outlined.Group,
-    ),
-    HomeNavigationItem.ImageVectorIcon(
         screen = MainDestination.MARKINGS_ROUTE,
         title = "Marcaciones",
-        iconImageVector = Icons.Outlined.CreditCard,
+        iconImageVector = Icons.Outlined.CardMembership,
     ),
     HomeNavigationItem.ImageVectorIcon(
         screen = MainDestination.USERS_ROUTE,
@@ -43,6 +37,17 @@ val navigationItems = listOf(
         screen = MainDestination.CONSULTA_SCREEN,
         title = "Consultas",
         iconImageVector = Icons.Outlined.QueryStats,
+    ),
+    HomeNavigationItem.ImageVectorIcon(
+        screen = MainDestination.CAMERA_SCREEN,
+        title = "Scanner Qr",
+        iconImageVector = Icons.Outlined.QrCodeScanner
+    ),
+    HomeNavigationItem.ImageVectorIcon(
+//        screen = MainDestination.CIUDADES_SCREEN,
+        screen = MainDestination.CIUDADES_SCREEN,
+        title = "Mustering",
+        iconImageVector = Icons.Outlined.Group,
     ),
     HomeNavigationItem.ImageVectorIcon(
         screen = MainDestination.CONFIGURATION_ROUTE,

@@ -13,7 +13,7 @@ class AppPreferencesImpl @Inject constructor(
     override val passwordStream: MutableStateFlow<String>
     override var password: String by PasswordPreferenceDelegate("password_pref", "1234")
     override val urlServidorStream: MutableStateFlow<String>
-    override var urlServidor: String by UrlServidorPreferenceDelegate("url_servidor_pref","http://172.20.10.55:91")
+    override var urlServidor: String by UrlServidorPreferenceDelegate("url_servidor_pref","http://172.20.10.56:91")
     init{
         passwordStream =MutableStateFlow(password)
         urlServidorStream = MutableStateFlow(urlServidor)

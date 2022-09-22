@@ -1,9 +1,11 @@
 package com.coppernic.mobility.tasks
 
 import android.content.Context
+import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -35,6 +37,7 @@ class GetDataServer @AssistedInject constructor(
         const val TAG = "get_data_server"
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         val telephoneManger =  applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(loadingCounter,uiMessageManager)

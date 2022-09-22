@@ -8,5 +8,6 @@ object Params {
     const val ZONE_PARAM = "zoneId"
     const val GUID_USER = "guidUser"
     const val ESTADO_PERSON_P = "estadp"
-
+    const val IS_CONSULTA = "is_consulta"
+    const val  QR_PARAM = "qr_param"
 }

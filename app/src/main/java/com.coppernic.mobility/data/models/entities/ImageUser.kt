@@ -11,5 +11,4 @@ data class ImageUser(
     @PrimaryKey val userGui:String,
     val picture:Bitmap? = null,
     val nombre:String? = " ",
-
 )

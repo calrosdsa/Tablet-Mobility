@@ -59,7 +59,7 @@ fun DrawerContentScreen(
             RowIconItem(
                 item = it,
                 navigateTo = {
-                    if(index != 5){
+                    if(index != 6){
                     navController.navigate(it.screen){
                         launchSingleTop = true
                     }

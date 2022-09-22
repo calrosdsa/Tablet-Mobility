@@ -79,10 +79,10 @@ class SendMarcacionesWorker @AssistedInject constructor(
             )
             Log.d("SendRioWorker", response.receive() as String)
             if (response.receive() as String == "Login successful") {
-                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
+//                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
                 //enviar encendido de puerta
                 var u1 = "https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update"
-                Log.d("SendRioWorker", u1)
+//                Log.d("SendRioWorker", u1)
                 response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                     contentType(ContentType.Application.Xml)
                     body = "<Request>\n" +
@@ -97,7 +97,7 @@ class SendMarcacionesWorker @AssistedInject constructor(
                             "   </BusUpdate>\n" +
                             "</Request>"
                 }
-                Log.d("SendRioWorker", response.toString())
+//                Log.d("SendRioWorker", response.toString())
                 if (response.receive() as String == "<Response>OK</Response>") {
                     response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                         contentType(ContentType.Application.Xml)
@@ -139,18 +139,18 @@ class SendMarcacionesWorker @AssistedInject constructor(
                                 "  </BusUpdate>\n" +
                                 "</Request>"
                     }
-                    Log.d("SendRioWorker", response.status.toString())
+//                    Log.d("SendRioWorker", response.status.toString())
                     if (response.receive() as String == "<Response>OK</Response>") {
                         //update state in db
                         db.marcacionDao().updateMarcacion(marcacion.copy(
                             estado = "enviado",
                         ))
                     } else {
-                        Log.d("SendRioWorker", "envio de marcacion fallo - ${marcacion.cardCode},${marcacion.fecha}")
+//                        Log.d("SendRioWorker", "envio de marcacion fallo - ${marcacion.cardCode},${marcacion.fecha}")
                     }
                 }
             } else {
-                Log.d("SendRioWorker", "login fallo")
+//                Log.d("SendRioWorker", "login fallo")
             }
         } catch (e: Exception){
             return Result.failure()

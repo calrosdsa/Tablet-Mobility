@@ -3,12 +3,16 @@ package com.coppernic.mobility.ui
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.material.Icon
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import com.coppernic.mobility.ui.screens.SplashScreen
 import com.coppernic.mobility.ui.screens.home.HomeScreen
 import com.coppernic.mobility.ui.screens.accesss.AccessScreen
+import com.coppernic.mobility.ui.screens.camera.CameraScreen
 import com.coppernic.mobility.ui.screens.ciudades.CiudadesScreen
 import com.coppernic.mobility.ui.screens.consulta.ConsultaScreen
 import com.coppernic.mobility.ui.screens.detail.DetailScreen
@@ -23,6 +27,7 @@ import com.coppernic.mobility.ui.screens.zones.ZoneScreen
 import com.coppernic.mobility.util.constants.MainDestination
 import com.coppernic.mobility.util.constants.Params
 import com.coppernic.mobility.ui.screens.estadoPerson.EstadoPerson
+import com.coppernic.mobility.ui.screens.qr.QrScreen
 import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalAnimationApi
@@ -83,11 +88,21 @@ fun NavGraphBuilder.homeGraph(
     ){
         ZoneScreen(navController , scaffoldState)
     }
+    composableDetail(MainDestination.MANUAL_ROUTE + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
+            "is_consulta={${Params.IS_CONSULTA}}", arguments = listOf(
+        navArgument(Params.TYPE_ACCESS_PARAM){
+            type = NavType.StringType
+            nullable = true
+        },
+        navArgument(Params.IS_CONSULTA){
+            type = NavType.StringType
+            nullable = true
+        }
+            )){
+        ManualMarkerScreen(navController)
+    }
     composableDetail(MainDestination.CONFIGURATION_ROUTE){
         SettingScreen(navController,scaffoldState)
-    }
-    composableDetail(MainDestination.MANUAL_ROUTE + "/{${Params.TYPE_ACCESS_PARAM}}"){
-        ManualMarkerScreen(navController)
     }
     composableDetail(MainDestination.SERVER_ROUTE){
         ServidorScreen()
@@ -108,8 +123,34 @@ fun NavGraphBuilder.homeGraph(
     composableDetail(MainDestination.USERS_ROUTE){
         UsersScreem(navController)
     }
-    composableDetail(MainDestination.CONSULTA_SCREEN){
-       ConsultaScreen(navController, scaffoldState)
+    composableDetail(MainDestination.CONSULTA_SCREEN + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
+            "facility_code={${Params.FACILITY_CODE_P}}&card_number={${Params.CARD_NUMBER_P}}",
+        arguments = listOf(
+            navArgument(Params.TYPE_ACCESS_PARAM){
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument(Params.FACILITY_CODE_P){
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument(Params.CARD_NUMBER_P){
+                type = NavType.StringType
+                nullable = true
+            }
+        )){
+        ConsultaScreen(navController = navController,scaffoldState)
+    }
+    composableDetail(MainDestination.CAMERA_SCREEN){
+        CameraScreen(navController, scaffoldState)
+    }
+    composableDetail(MainDestination.QR_SCREEN + "?${Params.QR_PARAM}={${Params.QR_PARAM}}",
+    arguments = listOf(
+        navArgument(Params.QR_PARAM){
+            type = NavType.StringType
+            nullable = true
+        })){
+        QrScreen(navController , scaffoldState )
     }
 
 }

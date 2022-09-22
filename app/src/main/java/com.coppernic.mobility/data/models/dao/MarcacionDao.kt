@@ -23,6 +23,9 @@ interface MarcacionDao {
     @Query("SELECT COUNT(id) FROM marcacion WHERE estado = 'pendiente'")
     fun getCountMarcaciones():Flow<Int>
 
+    @Query("SELECT COUNT(id) FROM marcacion WHERE estado = 'pendiente'")
+    suspend fun getMarcacionCount():Int
+
 
     @Query("SELECT * FROM marcacion ORDER BY fecha DESC")
     fun getMarcacionesFlow(): Flow<List<Marcacion>>

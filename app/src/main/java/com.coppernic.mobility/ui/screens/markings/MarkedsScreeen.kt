@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -57,6 +58,9 @@ fun MarkedsScreen(
     val setSorted = remember {
         mutableStateOf(false)
     }
+    var dateValue by remember {
+        mutableStateOf("")
+    }
     val mContext = LocalContext.current
 
     val mYear: Int
@@ -80,15 +84,13 @@ fun MarkedsScreen(
     val mDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            dateValue = "${mDayOfMonth}/${mMonth + 1}/$mYear"
 //            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
             val date = LocalDateTime.of(mYear, mMonth + 1, mDayOfMonth, 0, 0, 0)
             val zoneOffSet: ZoneOffset = zone.rules.getOffset(date)
             val time = date.atOffset(zoneOffSet)
 //            viewModel.setSortedOptionDay(dayOptions.NO_OPTION)
             viewModel.setDateSelect(time)
-            coroutine.launch {
-                sheetState.hide()
-            }
 //            Log.d("DATE_PICKER",time.toString())
         }, mYear, mMonth, mDay
     )
@@ -97,14 +99,12 @@ fun MarkedsScreen(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = 15.dp)
+            ) {
                 MarkerBottomSheetContent(
 //                    currentDayOption = state.dayOptions ?: dayOptions.TODAY,
-                    closeSheetBottom = {
-                        coroutine.launch {
-                            sheetState.hide()
-                        }
-                    },
                     selectTipoDeMarcacion = {
                         viewModel.setTipoDeMarcacion(it)
                     },
@@ -112,12 +112,22 @@ fun MarkedsScreen(
                     currentTipoDeMarcacion = state.tipoDeMarcacion,
                     currentMarcacionEstado = state.marcacionState,
                     setMarcacionEstado = { viewModel.setMarcacionEstado(it) },
-                    setDateCalendar = { viewModel.setDateSelect(null) }
+                    setDateCalendar = {
+                        viewModel.setDateSelect(null)
+                        dateValue = ""
+                    },
+                    setFilters = {
+                        viewModel.updateDataSource()
+                        coroutine.launch {
+                            sheetState.hide()
+                        }
+                    },
+                    dateValue = dateValue
                 )
             }
         }, sheetState = sheetState,
         sheetBackgroundColor = MaterialTheme.colors.surface,
-        scrimColor = Color.Black.copy(alpha = 0.55f),
+        scrimColor = Color.Black.copy(alpha = 0.3f),
         sheetShape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
     ) {
         Scaffold(
@@ -135,50 +145,59 @@ fun MarkedsScreen(
                         lazyState.scrollToItem(0)
                     }
                 }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowUpward,
-                            contentDescription = " Ascending "
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.ArrowUpward,
+                        contentDescription = " Ascending "
+                    )
+                }
             }
-        ) {padding->
-            Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-                FilterRow(openFilter = { coroutine.launch { sheetState.show() } },
-                    sortedState = setSorted,
-                    clickSorted = {
-                        if (state.sortedOptions) {
-                            viewModel.setSortedOption(false)
-                        } else viewModel.setSortedOption(true)
-                    }
-                )
-                LazyColumn(state = lazyState, modifier = Modifier.fillMaxSize()) {
-                    items(items = pagingItems) { item ->
-                        MarcacionItem(
-                            item = item,
-                            onClick = {
-                                navController.navigate(MainDestination.USER_DETAIL + "/${item?.cardImageUser?.userGui}") {
-                                    launchSingleTop = true
+        ) { padding ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                ) {
+                    FilterRow(openFilter = { coroutine.launch { sheetState.show() } },
+                        sortedState = setSorted,
+                        clickSorted = {
+                            if (state.sortedOptions) {
+                                viewModel.setSortedOption(false)
+                            } else viewModel.setSortedOption(true)
+                        }
+                    )
+                    LazyColumn(state = lazyState, modifier = Modifier.fillMaxSize()) {
+                        items(items = pagingItems) { item ->
+                            MarcacionItem(
+                                item = item,
+                                onClick = {
+                                    navController.navigate(MainDestination.USER_DETAIL + "/${item?.cardImageUser?.userGui}") {
+                                        launchSingleTop = true
+                                    }
                                 }
-                            }
-                        )
-                        Divider()
-                    }
-
-                    if (pagingItems.loadState.append == LoadState.Loading) {
-                        item {
-                            Box(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(24.dp)
-                            ) {
-                                CircularProgressIndicator(Modifier.align(Alignment.Center))
-                            }
+                            )
+                            Divider()
                         }
                     }
-
                 }
 
-            }
+                if (pagingItems.itemCount == 0) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Column(modifier = Modifier.align(Alignment.Center)) {
+                            Text(
+                                text = "No se encontraron marcaciones",
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier.padding(10.dp),
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+                    }
+                }
+                }
         }
     }
 }
@@ -226,7 +245,7 @@ fun MarcacionItem(
                 verticalAlignment = Alignment.CenterVertically) {
 
                     Text(
-                        text = "Codigo: ${marcacion.nroTarjeta}",
+                        text = "Codigo:${marcacion.nroTarjeta}",
                         style = MaterialTheme.typography.body2,
                         maxLines = 1
                     )
@@ -243,11 +262,20 @@ fun MarcacionItem(
                         color =if(marcacion.estado == "pendiente") Color.Red else Color(0xFF00C853)
                     )
                 }
-                Text(
-                    text = "Acceso: ${if (marcacion.acceso == "true") "Acceso Permitido" else "Acceso Denegado"}",
-                    style = MaterialTheme.typography.body2,
-                    maxLines = 1
-                )
+                Row(modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "Acceso:${if (marcacion.acceso == "true") "Acceso Permitido" else "Acceso Denegado"}",
+                        style = MaterialTheme.typography.body2,
+                        maxLines = 1
+                    )
+                    Text(
+                        text =if (marcacion.tipoMarcacion == "R1") "Ingreso" else "Salida",
+                        style = MaterialTheme.typography.body2,
+                        color =if(marcacion.estado == "pendiente") Color.Red else Color(0xFF00C853)
+                    )
+                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -268,9 +296,9 @@ fun MarcacionItem(
 //                Icon(imageVector =if(marcacion.tipoMarcacion == "R1")  Icons.Default.Check else Icons.Default.Close,
 //                    contentDescription = marcacion.estado)
                     Icon(
-                        painter = painterResource(id = if (marcacion.tipoMarcacion == "R2") R.drawable.p_out else R.drawable.p_in),
+                        painter = painterResource(id = if (marcacion.tipoMarcacion == "R1") R.drawable.p_in else R.drawable.p_out),
                         contentDescription = marcacion.tipoMarcacion, modifier = Modifier.size(28.dp),
-                        tint = if(marcacion.tipoMarcacion == "R2") Color.Red else Color(0xFF00C853)
+                        tint = if(marcacion.estado == "pendiente") Color.Red else Color(0xFF00C853)
                     )
                 }
             }

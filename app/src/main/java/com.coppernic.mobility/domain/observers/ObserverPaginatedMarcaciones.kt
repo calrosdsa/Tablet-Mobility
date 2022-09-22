@@ -18,17 +18,18 @@ class ObserverPaginatedMarcaciones @Inject constructor(
     private val imageDao: ImageDao,
 ):PagingInteractor<ObserverPaginatedMarcaciones.Params, MarcacionWithImage>(){
 
-    companion object{
         private val zone: ZoneId = ZoneId.of("GMT-4")
         private val localDateTime = LocalDateTime.now()
         private val zoneOffSet: ZoneOffset = zone.rules.getOffset(localDateTime)
-        private val offsetDateTime: OffsetDateTime = localDateTime.atOffset(zoneOffSet).plusMinutes(10)
-    }
+//        private val offsetDateTime: OffsetDateTime = localDateTime.atOffset(zoneOffSet)
+        private val offsetDateTime: OffsetDateTime = localDateTime.atOffset(zoneOffSet).plusHours(1)
 
     override fun createObservable(params: Params): Flow<PagingData<MarcacionWithImage>> {
 //        Log.d("DATE_PICKER", "OBSERVER : ${params.date}")
-        val startDate = params.date?.minusHours(4)?.toEpochSecond()?: offsetDateTime.minusMonths(1).toEpochSecond()
-        val endDate = params.date?.plusHours(20)?.toEpochSecond() ?:offsetDateTime.toEpochSecond()
+        val startDate = params.date?.minusMinutes(1)?.toEpochSecond()?: offsetDateTime.minusMonths(2).toEpochSecond()
+//        val startDate = params.date?.toEpochSecond()?: offsetDateTime.minusMonths(2).toEpochSecond()
+//        val endDate = params.date?.toEpochSecond() ?:offsetDateTime.toEpochSecond()
+        val endDate = params.date?.plusHours(24)?.toEpochSecond() ?:offsetDateTime.toEpochSecond()
         return  Pager(
             config = params.pagingConfig,
             pagingSourceFactory = {

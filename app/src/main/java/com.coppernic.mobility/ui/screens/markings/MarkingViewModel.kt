@@ -78,25 +78,25 @@ class MarkingViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
-            tipoDeMarcacion.collect{
-                updateDataSource()
-            }
-        }
-        viewModelScope.launch {
-            marcacionEstado.collectLatest {
-                updateDataSource()
-            }
-        }
-        viewModelScope.launch {
-            dateSelect.collectLatest {
-                updateDataSource()
-            }
-        }
+//        viewModelScope.launch {
+//            tipoDeMarcacion.collect{
+//                updateDataSource()
+//            }
+//        }
+//        viewModelScope.launch {
+//            marcacionEstado.collectLatest {
+//                updateDataSource()
+//            }
+//        }
+//        viewModelScope.launch {
+//            dateSelect.collectLatest {
+//                updateDataSource()
+//            }
+//        }
 
 
     }
-    private fun updateDataSource(){
+    fun updateDataSource(){
         pagingInteractor(ObserverPaginatedMarcaciones.Params(
             pagingConfig = PAGING_CONFIG,
             sorted = sortedOption.value,
@@ -138,9 +138,9 @@ class MarkingViewModel @Inject constructor(
 
     companion object {
         val PAGING_CONFIG = PagingConfig(
-            pageSize = 10,
+            pageSize = 20,
             enablePlaceholders = false,
-            initialLoadSize = 10
+            initialLoadSize = 20
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.coppernic.mobility.ui.screens.setting
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.coppernic.mobility.data.models.dao.ConfigDao
@@ -56,6 +58,7 @@ class SettingViewModel @Inject constructor(
         observerSettings(ObserverSettings.Params(Unit))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun executeAsync() {
         viewModelScope.launch {
             updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(
@@ -83,7 +86,8 @@ class SettingViewModel @Inject constructor(
                                     url_servidor = "http://172.20.10.55:91",
                                     localePass = "129192",
                                     zonaPoligono = "Zona Poligono",
-                                    imei = "869448030242433",
+//                                    imei = "869448030242433",
+                                    imei = result.message.toString(),
                                     ciudades = it.ciudades
                                 )
                             )
