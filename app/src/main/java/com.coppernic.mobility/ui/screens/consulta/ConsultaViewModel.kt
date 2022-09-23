@@ -13,8 +13,8 @@ import com.coppernic.mobility.data.models.dao.CredentialDao
 import com.coppernic.mobility.data.models.dao.ImageDao
 import com.coppernic.mobility.domain.util.UiMessage
 import com.coppernic.mobility.domain.util.UiMessageManager
-import com.coppernic.mobility.ui.screens.waiting.AccessPerson
-import com.coppernic.mobility.ui.screens.waiting.AccessState
+import com.coppernic.mobility.ui.screens.waitingAccess.AccessPerson
+import com.coppernic.mobility.ui.screens.waitingAccess.AccessState
 import com.coppernic.mobility.util.Access
 import com.coppernic.mobility.util.constants.Params
 import com.coppernic.mobility.R
@@ -89,6 +89,7 @@ class ConsultaViewModel @Inject constructor(
                 }
             }
         }
+
     fun getCode(code:String,valueText: MutableState<String>) {
         val cardCode = code.substring(12).dropLast(2)
         viewModelScope.launch {
@@ -102,6 +103,7 @@ class ConsultaViewModel @Inject constructor(
             }
         }
     }
+
     fun checkValidation(facilityCode:Int,cardNumber:Int) {
             viewModelScope.launch(Dispatchers.IO) {
                 val credential = credentialDao.getCredentialByNumber(facilityCode, cardNumber)

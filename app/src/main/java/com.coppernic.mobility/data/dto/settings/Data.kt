@@ -8,5 +8,8 @@ data class Data(
     val interfas: String,
     val ipControlador: String,
     val passwordRio: String,
-    val usuarioRio: String
+    val usuarioRio: String,
+    val passwordInicioApp:String,
+    val passwordSettingsApp:String,
+    val nombreTablet:String,
 )

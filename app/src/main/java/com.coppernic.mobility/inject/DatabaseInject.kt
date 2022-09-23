@@ -56,6 +56,9 @@ object DatabaseDaoModule {
 
     @Provides
     fun provideImageDao(db:AppDatabase) = db.imageDao()
+
+    @Provides
+    fun provideAccessDao(db:AppDatabase) = db.accessDao()
 }
 
 @InstallIn(SingletonComponent::class)

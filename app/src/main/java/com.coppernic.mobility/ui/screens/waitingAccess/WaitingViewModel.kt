@@ -1,4 +1,4 @@
-package com.coppernic.mobility.ui.screens.waiting
+package com.coppernic.mobility.ui.screens.waitingAccess
 
 import android.content.Context
 import android.media.MediaPlayer

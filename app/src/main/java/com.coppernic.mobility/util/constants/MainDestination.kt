@@ -1,6 +1,7 @@
 package com.coppernic.mobility.util.constants
 
 object MainDestination {
+   const val INITIAL_SCREEN = "initial_screen"
    const val HOME_ROUTE ="home_route"
    const val ACCESS_ROUTE = "access_route"
    const val MANUAL_ROUTE = "manual_route"
@@ -18,4 +19,6 @@ object MainDestination {
    const val ESTADO_PERSON = "estado_person_route"
    const val  CAMERA_SCREEN = "cameraScreen"
    const val QR_SCREEN = "qr_screen"
+
+
 }

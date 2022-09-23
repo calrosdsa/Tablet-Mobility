@@ -16,7 +16,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Home(
-    password:String
+    initialRoute:String
 ){
     val navController = rememberAnimatedNavController()
     val state = rememberScaffoldState()
@@ -24,7 +24,7 @@ fun Home(
     Scaffold(
         scaffoldState = state,
         drawerContent = {
-            DrawerContentScreen(navController = navController, scaffoldState =state,password)
+            DrawerContentScreen(navController = navController, scaffoldState =state)
         },
         drawerGesturesEnabled = false
     ) {
@@ -37,7 +37,7 @@ fun Home(
         ) {
             AnimatedNavHost(
                 navController = navController,
-                startDestination = MainDestination.HOME_ROUTE){
+                startDestination = initialRoute){
                 homeGraph(navController, state)
             }
         }

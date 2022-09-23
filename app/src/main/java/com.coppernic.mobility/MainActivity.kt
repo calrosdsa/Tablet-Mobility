@@ -30,12 +30,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-        val passwordPref = appPreferences.passwordStream.collectAsState()
+            val initialRoute = appPreferences.initialScreen
+
             CompositionLocalProvider(
                 LocalAppDateFormatter provides appDateFormatter
             ) {
             TecluMobilityTheme() {
-                Home(password = passwordPref.value)
+                Home(initialRoute)
             }
             }
         }

@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.coppernic.mobility.util.constants.MainDestination
+import com.coppernic.mobility.util.constants.Params
 
 
 sealed class HomeNavigationItem(
@@ -50,7 +51,7 @@ val navigationItems = listOf(
         iconImageVector = Icons.Outlined.Group,
     ),
     HomeNavigationItem.ImageVectorIcon(
-        screen = MainDestination.CONFIGURATION_ROUTE,
+        screen = MainDestination.ACCESS_ROUTE,
         title = "Configuraciones",
         iconImageVector = Icons.Outlined.Settings,
         ),

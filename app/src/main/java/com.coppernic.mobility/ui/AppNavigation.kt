@@ -3,15 +3,13 @@ package com.coppernic.mobility.ui
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.material.Icon
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import com.coppernic.mobility.ui.screens.SplashScreen
+import com.coppernic.mobility.ui.screens.accesss.ValidationScreen
+import com.coppernic.mobility.ui.screens.accesssToConfig.AccessConfigScreen
 import com.coppernic.mobility.ui.screens.home.HomeScreen
-import com.coppernic.mobility.ui.screens.accesss.AccessScreen
 import com.coppernic.mobility.ui.screens.camera.CameraScreen
 import com.coppernic.mobility.ui.screens.ciudades.CiudadesScreen
 import com.coppernic.mobility.ui.screens.consulta.ConsultaScreen
@@ -22,7 +20,7 @@ import com.coppernic.mobility.ui.screens.mustering.MusteringScreen
 import com.coppernic.mobility.ui.screens.servidor.ServidorScreen
 import com.coppernic.mobility.ui.screens.setting.SettingScreen
 import com.coppernic.mobility.ui.screens.usuarios.UsersScreem
-import com.coppernic.mobility.ui.screens.waiting.WaitingScreen
+import com.coppernic.mobility.ui.screens.waitingAccess.WaitingScreen
 import com.coppernic.mobility.ui.screens.zones.ZoneScreen
 import com.coppernic.mobility.util.constants.MainDestination
 import com.coppernic.mobility.util.constants.Params
@@ -33,17 +31,22 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalAnimationApi
 fun NavGraphBuilder.homeGraph(
     navController: NavController,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
 ){
+    composableDetail(MainDestination.INITIAL_SCREEN ){
+        ValidationScreen(navController, scaffoldState)
+    }
+    composableDetail(MainDestination.ACCESS_ROUTE){
+        AccessConfigScreen(navController, scaffoldState)
+    }
+
     composable(MainDestination.HOME_ROUTE){
         HomeScreen(navController,scaffoldState)
     }
     composable(MainDestination.SPLASH_SCREEN){
         SplashScreen(navController)
     }
-    composableDetail(MainDestination.ACCESS_ROUTE){
-        AccessScreen()
-    }
+
     composableDetail(MainDestination.ESTADO_PERSON + "?estado={${Params.ESTADO_PERSON_P}}&" +
             "ciudadId={${Params.CIUDAD_PARAM}}", arguments = listOf(
         navArgument(Params.ESTADO_PERSON_P){

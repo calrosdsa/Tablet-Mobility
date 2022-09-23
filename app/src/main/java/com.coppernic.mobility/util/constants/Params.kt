@@ -10,4 +10,5 @@ object Params {
     const val ESTADO_PERSON_P = "estadp"
     const val IS_CONSULTA = "is_consulta"
     const val  QR_PARAM = "qr_param"
+    const val IS_INITIAL = "is_initial"
 }

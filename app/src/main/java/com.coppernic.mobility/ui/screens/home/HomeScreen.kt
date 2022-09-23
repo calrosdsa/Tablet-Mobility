@@ -1,6 +1,7 @@
 package com.coppernic.mobility.ui.screens.home
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +43,7 @@ fun HomeScreen(
     val openDialog = remember {
         mutableStateOf(false)
     }
+    val nameTablet = viewModel.tableName.collectAsState().value
 //    val marcacionValidate by remember(state.marcacionCount) {
 //        derivedStateOf {
 //            if(state.marcacionCount == 1) 0 else state.marcacionCount
@@ -61,6 +63,9 @@ fun HomeScreen(
     BackHandler {
         context.finishAffinity()
     }
+    LaunchedEffect(key1 = viewModel, block = {
+        Log.d("ACCESS_DEBUG","RENDER")
+    })
 
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {
@@ -73,7 +78,7 @@ fun HomeScreen(
                     .padding(40.dp)
             ) {
                 Text(text = "Panel Name", style = MaterialTheme.typography.subtitle2)
-                Text(text = "Punto de Encuentro 1", style = MaterialTheme.typography.subtitle1)
+                Text(text = nameTablet, style = MaterialTheme.typography.subtitle1)
             }
         }
     }
@@ -92,7 +97,8 @@ fun HomeScreen(
             marcacionesCount = state.marcacionCount,
             navigateTo = { navController.navigate(MainDestination.MARKINGS_ROUTE){
                 launchSingleTop = true
-            } }
+            } },
+            tableName= nameTablet
         )
         Divider()
         SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.loading),

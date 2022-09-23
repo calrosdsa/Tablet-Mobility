@@ -7,5 +7,5 @@ data class SettingState (
     val settingState:Config? = null,
     val url_servidor:String = "",
     val loading:Boolean = false,
-    val message: UiMessage? = null
+    val message: UiMessage? = null,
 )

@@ -17,7 +17,8 @@ fun TopBar(
     onRefresh:()->Unit,
     onOpenDialog:()->Unit,
     marcacionesCount:Int?,
-    navigateTo:()->Unit
+    navigateTo:()->Unit,
+    tableName:String,
 ){
 //    var size: Dp by remember { mutableStateOf(40.dp) }
 
@@ -31,7 +32,7 @@ fun TopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextButton(onClick = { onOpenDialog() }) {
-            Text(text = "Punto de Encuentro 1", style = MaterialTheme.typography.subtitle1,
+            Text(text = tableName, style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier
                     .fillMaxWidth(0.60f),
                 maxLines = 1

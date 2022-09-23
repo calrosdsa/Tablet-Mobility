@@ -1,4 +1,4 @@
-package com.coppernic.mobility.ui.screens.waiting
+package com.coppernic.mobility.ui.screens.waitingAccess
 
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color

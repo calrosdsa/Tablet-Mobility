@@ -28,18 +28,8 @@ import kotlinx.coroutines.launch
 fun DrawerContentScreen(
     navController: NavController,
     scaffoldState: ScaffoldState,
-    passwordPref:String
 ) {
     val coroutine = rememberCoroutineScope()
-    var deleteAlert by remember {
-        mutableStateOf(false)
-    }
-    val focusManager = LocalFocusManager.current
-    val password = remember {
-        mutableStateOf("")
-    }
-    var passwordVisibility by remember { mutableStateOf(false) }
-    val onError  =  remember { mutableStateOf(false) }
 
 
     Column(
@@ -55,110 +45,20 @@ fun DrawerContentScreen(
                 Icon(imageVector = Icons.Outlined.Cancel, contentDescription = "Drawer Cancel")
             }
         }
-        navigationItems.forEachIndexed() {index,it->
+        navigationItems.forEach {
             RowIconItem(
                 item = it,
                 navigateTo = {
-                    if(index != 6){
                     navController.navigate(it.screen){
                         launchSingleTop = true
                     }
                     coroutine.launch {
                     scaffoldState.drawerState.close()
                     }
-                    }else{
-                        deleteAlert = true
-                    }
                 }
             )
         }
 
-    }
-    if(deleteAlert){
-        Dialog(onDismissRequest = { deleteAlert = false }) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.background)
-                .height(180.dp)
-                .padding(10.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = "Ingresa la contraseña",color = MaterialTheme.colors.secondaryVariant.copy(alpha = 0.7f))
-//                TextField(value = password, onValueChange = {
-//                    password = it
-//                }, modifier = Modifier.fillMaxWidth())
-
-                TransparentTextField(
-                    textFieldValue = password,
-                    textLabel = "Contraseña",
-                    keyboardType = KeyboardType.Password,
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                            if(passwordPref == password.value){
-                                onError.value = false
-                                password.value = ""
-                                deleteAlert = false
-                                navController.navigate(MainDestination.CONFIGURATION_ROUTE)
-                                coroutine.launch {
-                                    scaffoldState.drawerState.close()
-                                }
-                            }else{
-                                onError.value = true
-                            }
-
-                        }
-                    ),
-                    imeAction = ImeAction.Done,
-                    trailingIcon = {
-                        IconButton(
-                            onClick = {
-                                passwordVisibility = !passwordVisibility
-                            }
-                        ) {
-                            Icon(
-                                imageVector = if(passwordVisibility) {
-                                    Icons.Default.Visibility
-                                } else {
-                                    Icons.Default.VisibilityOff
-                                },
-                                tint = MaterialTheme.colors.primary,
-                                contentDescription = "Toggle Password Icon"
-                            )
-                        }
-                    },
-                    error = onError.value,
-                    visualTransformation = if(passwordVisibility) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    }
-                )
-
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = { deleteAlert = false }) {
-                        Text(text = "CANCELAR",color = MaterialTheme.colors.primary)
-                    }
-                    TextButton(onClick = {
-                        if(passwordPref == password.value){
-                            onError.value = false
-                            password.value = ""
-                            deleteAlert = false
-                            navController.navigate(MainDestination.CONFIGURATION_ROUTE)
-                            coroutine.launch {
-                                scaffoldState.drawerState.close()
-                            }
-                        }else{
-                            onError.value = true
-                        }
-                    }) {
-                        Text(text = "INGRESAR",color = MaterialTheme.colors.primary)
-                    }
-                }
-
-            }
-        }
     }
 }
 

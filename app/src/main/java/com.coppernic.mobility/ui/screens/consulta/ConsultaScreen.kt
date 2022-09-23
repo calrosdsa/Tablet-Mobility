@@ -75,11 +75,7 @@ fun ConsultaScreen(
             navController.popBackStack()
         }
     }
-    val userChoice = when (state.userChoice) {
-        "R1" -> "Ingreso"
-        "R2" -> "Salida"
-        else -> ""
-    }
+
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.card_encode))
     val progress by animateLottieCompositionAsState(
@@ -130,7 +126,7 @@ fun ConsultaScreen(
                         progress = { progress },
                     )
                     Text(
-                        text = "Esperando Identificacion ($userChoice)",
+                        text = "Esperando Identificacion ",
                         style = MaterialTheme.typography.h6.copy(
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colors.secondaryVariant

@@ -15,6 +15,7 @@ import com.coppernic.mobility.domain.interactors.UpdateCardHolders
 import com.coppernic.mobility.domain.interactors.UpdateCredentials
 import com.coppernic.mobility.domain.observers.ObserverMarcacionesCount
 import com.coppernic.mobility.domain.util.*
+import com.coppernic.mobility.util.interfaces.AppPreferences
 import com.coppernic.mobility.util.interfaces.AppTasks
 import com.coppernic.mobility.util.interfaces.AppUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,15 +29,12 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val updateCardHolders: UpdateCardHolders,
     private val updateCredentials: UpdateCredentials,
-//    private val observerMarcacionesCount: ObserverMarcacionesCount,
     private val marcacionDao: MarcacionDao,
-//    private val credentialDao: CredentialDao,
-//    private val imageDao: ImageDao,
-//    private val cardholderDao: CardholderDao,
-//    private val appUtil: AppUtil,
+    appPreferences: AppPreferences,
     private val appTasks: AppTasks,
     @ApplicationContext private val context:Context
 ):ViewModel(){
+    val tableName = appPreferences.tableNameStream
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
     private val networkConnection = MutableStateFlow<NetworkStatus>(NetworkStatus.Unavailable)
@@ -73,7 +71,6 @@ class HomeViewModel @Inject constructor(
 //        insertToDb()
         getMarcarcaionCount()
     }
-
 //    fun insertToDb() {
 //        viewModelScope.launch(Dispatchers.IO) {
 //////            val credentials = ca

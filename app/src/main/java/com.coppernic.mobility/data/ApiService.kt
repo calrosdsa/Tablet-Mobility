@@ -1,5 +1,6 @@
 package com.coppernic.mobility.data
 
+import com.coppernic.mobility.data.dto.access.AccessDataDto
 import com.coppernic.mobility.data.dto.cardHolder.CardHolder
 import com.coppernic.mobility.data.dto.credentials.Credentials
 import com.coppernic.mobility.data.dto.mustering.MusteringByCiudadDto
@@ -12,6 +13,11 @@ interface ApiService {
     @GET("CardHolder/cardlist")
     suspend fun getCardHolders(): CardHolder
 
+    @GET("Settings/accessSettingsList")
+    suspend fun getAccessSettings():AccessDataDto
+
+    @GET("Settings/accessInicioList")
+    suspend fun getAccessInicio():AccessDataDto
     @GET("Credential/credentiallist")
     suspend fun getCredentials(): Credentials
 

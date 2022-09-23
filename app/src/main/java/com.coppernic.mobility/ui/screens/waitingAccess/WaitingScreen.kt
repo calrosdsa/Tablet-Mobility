@@ -1,8 +1,6 @@
-package com.coppernic.mobility.ui.screens.waiting
+package com.coppernic.mobility.ui.screens.waitingAccess
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,7 +14,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,13 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
-import com.coppernic.mobility.ui.DisposableEffectWithLifeCycle
 import com.coppernic.mobility.ui.components.VerticalGrid
 import com.coppernic.mobility.ui.rememberStateWithLifecycle
 import com.coppernic.mobility.util.constants.MainDestination
 import com.coppernic.mobility.R
 import com.coppernic.mobility.util.constants.Params
-import kotlinx.coroutines.delay
 
 @Composable
 fun WaitingScreen(
@@ -49,11 +44,6 @@ fun WaitingScreen(
         })
     }
 
-//   DisposableEffectWithLifeCycle(onResume = {
-//       focusRequester.requestFocus()
-//   }) {
-//       focus.clearFocus()
-//   }
     val valueText = remember {
         mutableStateOf("")
     }
@@ -63,11 +53,6 @@ fun WaitingScreen(
 //            valueText.value = ""
         }
     })
-//    state.binaryCode?.let {
-//    LaunchedEffect(key1 = it, block = {
-//        valueText.value = ""
-//    })
-//    }
 
     BackHandler {
         if (state.personAccess?.accessState != null) {
@@ -115,17 +100,8 @@ fun WaitingScreen(
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-//           Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-//        Button(onClick = { viewModel.checkValidation(213,2937) }) {
-//        Text(text = "Permitido")
-//        }
-//           Button(onClick = { viewModel.checkValidation(123,1137) }) {
-//               Text(text = "Denegado")
-//           }
-//           }
                     if (state.personAccess?.accessDetail == null) {
-
-//       Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(1.dp))
                         LottieAnimation(
                             composition = composition,
                             progress = { progress },

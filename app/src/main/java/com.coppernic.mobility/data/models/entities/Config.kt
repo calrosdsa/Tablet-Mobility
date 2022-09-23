@@ -18,5 +18,5 @@ data class Config(
     val riouser: String?,
     val riopass: String?,
     val localePass: String?,
-    val imei:String
+    val imei:String,
 )

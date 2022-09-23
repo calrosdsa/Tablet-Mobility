@@ -3,6 +3,7 @@ package com.coppernic.mobility.data
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
+import com.coppernic.mobility.data.dto.access.AccessValue
 import com.coppernic.mobility.data.dto.settings.Ciudade
 import com.coppernic.mobility.data.dto.settings.Coordenada
 import com.google.gson.Gson
@@ -33,6 +34,13 @@ object Converters {
 //        return if (date == null) null else date.getTime()
 //    }
 
+    @TypeConverter
+    @JvmStatic
+    fun accessToJsonString(value:List<AccessValue>):String = Gson().toJson((value))
+
+    @TypeConverter
+    @JvmStatic
+    fun jsonToAccess(value:String) = Gson().fromJson(value,Array<AccessValue>::class.java).toList()
     @TypeConverter
     @JvmStatic
     fun citiestoJsonString(value:List<Ciudade>):String = Gson().toJson(value)

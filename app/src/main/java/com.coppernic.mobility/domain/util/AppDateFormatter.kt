@@ -8,6 +8,7 @@ import com.coppernic.mobility.inject.MediumDate
 import com.coppernic.mobility.inject.MediumDateTime
 import com.coppernic.mobility.inject.ShortDate
 import com.coppernic.mobility.inject.ShortTime
+import com.coppernic.mobility.util.interfaces.AppPreferences
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.Temporal
@@ -19,9 +20,10 @@ class AppDateFormatter @Inject constructor(
     @ShortTime private val shortTimeFormatter: DateTimeFormatter,
     @ShortDate private val shortDateFormatter: DateTimeFormatter,
     @MediumDate private val mediumDateFormatter: DateTimeFormatter,
-    @MediumDateTime private val mediumDateTimeFormatter: DateTimeFormatter
+    @MediumDateTime private val mediumDateTimeFormatter: DateTimeFormatter,
+    private val appPreferences: AppPreferences
 ) {
-
+       val baseUrl = appPreferences.urlServidor
 //    fun formatEpochLong(epochValue:Long?):String{
 //        val localDate  = OffsetDateTime.of(epochValue?.let { LocalDateTime.ofEpochSecond(it,0 , ZoneOffset.UTC) }, ZoneOffset.UTC)
 //        return shortDateFormatter.format(localDate)

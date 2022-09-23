@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.coppernic.mobility.data.dto.mustering.DataX
+import com.coppernic.mobility.ui.LocalAppDateFormatter
 import com.coppernic.mobility.ui.components.TopBarComponent
 import com.coppernic.mobility.ui.rememberStateWithLifecycle
 import kotlinx.coroutines.launch
@@ -88,8 +89,9 @@ fun EstadoPerson(
 
 @Composable
 fun ZoneItemMarcacion(
-    item: DataX
+    item: DataX,
 ) {
+    val formatter = LocalAppDateFormatter.current
     Row(modifier = Modifier.padding(horizontal = 5.dp),
     verticalAlignment = Alignment.CenterVertically) {
         if(item.picture.isBlank()){
@@ -103,7 +105,7 @@ fun ZoneItemMarcacion(
         }else{
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = "http://172.20.10.55:91/imagenes/${item.picture}"),
+                    model = "${formatter.baseUrl}/imagenes/${item.picture}"),
                 contentDescription = item.nombre, modifier = Modifier
                     .size(95.dp)
                     .padding(5.dp)
