@@ -1,5 +1,6 @@
 package com.coppernic.benchmark
 
+import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
@@ -25,14 +26,21 @@ class ExampleStartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
-    @Test
-    fun startup() = benchmarkRule.measureRepeated(
+//    @Test
+    private fun startup(mode:CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.coppernic.mobility",
         metrics = listOf(StartupTimingMetric()),
-        iterations = 5,
+        iterations = 10,
+        compilationMode = mode,
         startupMode = StartupMode.COLD
     ) {
         pressHome()
         startActivityAndWait()
     }
+
+    @Test
+    fun startupNoCompilation() = startup(CompilationMode.None())
+
+    @Test
+    fun startupBaselineProfile() = startup(CompilationMode.Partial())
 }

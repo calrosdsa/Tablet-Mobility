@@ -19,6 +19,7 @@ import com.dropbox.android.external.store4.StoreBuilder
 import com.coppernic.mobility.data.result.mapper.toCardHolderEntity
 import com.coppernic.mobility.data.result.mapper.toImageUser
 import com.coppernic.mobility.util.interfaces.AppPreferences
+import com.coppernic.mobility.util.interfaces.AppTasks
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +36,7 @@ typealias CardHolderStore = Store<Unit, List<Cardholder>>
 @InstallIn(SingletonComponent::class)
 @Module
 object CardHolderModule{
-    @SuppressLint("SuspiciousIndentation")
+//    @SuppressLint("SuspiciousIndentation")
     @Provides
     @Singleton
     fun provideCardHolderStore (
@@ -44,7 +45,8 @@ object CardHolderModule{
 //        appUtil: AppUtil,
         appPreferences: AppPreferences,
         imageDao: ImageDao,
-        @ApplicationContext context:Context
+//        appTasks: AppTasks,
+//        @ApplicationContext context:Context
     ):CardHolderStore = StoreBuilder.from(
         fetcher = Fetcher.of {
 
@@ -66,7 +68,7 @@ object CardHolderModule{
                   cardholderDao.withTransaction {
               runBlocking {
               val entriesForImage = async {
-                  entries.filter { it.picture.isNotBlank()}.map{
+                  entries.map{
                       it.toImageUser().copy(
                           picture = "${appPreferences.urlServidor}/imagenes/${it.picture}"
                       )
@@ -79,8 +81,10 @@ object CardHolderModule{
              }
                   imageDao.deleteAllImages()
               cardholderDao.deleteAll()
+//                  Log.d("DEBUG_D",entriesForImage.await().toString())
               imageDao.insertAll(entriesForImage.await())
               cardholderDao.insertAll(entriesR.await())
+//                  appTasks.
 //              entries.map {
 //                  cardholderDao.insert(
 //                      Cardholder(

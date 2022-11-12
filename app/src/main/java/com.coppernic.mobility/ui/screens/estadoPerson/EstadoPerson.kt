@@ -37,7 +37,7 @@ fun EstadoPerson(
     viewModel: EstadoViewModel = hiltViewModel()
 ) {
     val state by rememberStateWithLifecycle(stateFlow = viewModel.state)
-    val coroutine = rememberCoroutineScope()
+//    val coroutine = rememberCoroutineScope()
     val focus = LocalFocusManager.current
 //    val context = LocalContext.current
 //    val defaultImage = BitmapFactory.decodeResource(context.resources, R.drawable.profile)

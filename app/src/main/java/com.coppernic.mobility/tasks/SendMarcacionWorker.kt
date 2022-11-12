@@ -80,10 +80,10 @@ class SendMarcacionWorker @AssistedInject constructor(
             )
 //            Log.d("SendRioWorker", response.receive() as String)
             if (response.receive() as String == "Login successful") {
-                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
+//                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
                 //enviar encendido de puerta
                 val u1 = "https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update"
-                Log.d("SendRioWorker", u1)
+//                Log.d("SendRioWorker", u1)
                 response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                     contentType(ContentType.Application.Xml)
                     body = "<Request>\n" +
@@ -98,7 +98,7 @@ class SendMarcacionWorker @AssistedInject constructor(
                             "   </BusUpdate>\n" +
                             "</Request>"
                 }
-                Log.d("SendRioWorker", response.toString())
+//                Log.d("SendRioWorker", response.toString())
                 if (response.receive() as String == "<Response>OK</Response>") {
                     response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                         contentType(ContentType.Application.Xml)
@@ -110,17 +110,17 @@ class SendMarcacionWorker @AssistedInject constructor(
                                 "   </BusUpdate>\n" +
                                 "</Request>"
                     }
-                    if (response.receive() as String == "<Response>OK</Response>") {
-                        Log.d("SendRioWorker", "envio de offline programado exito")
-                    } else {
-                        Log.d("SendRioWorker", "envio de offline programado fallo")
-                    }
+//                    if (response.receive() as String == "<Response>OK</Response>") {
+//                        Log.d("SendRioWorker", "envio de offline programado exito")
+//                    } else {
+//                        Log.d("SendRioWorker", "envio de offline programado fallo")
+//                    }
                 } else {
                     Log.d("SendRioWorker", "envio de online fallo")
                 }
 
                 for ( marcacion in marcaciones){
-                    Log.d("SendRioWorker", "tarjeta ${marcacion.cardCode} enviando")
+//                    Log.d("SendRioWorker", "tarjeta ${marcacion.cardCode} enviando")
                     response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                         contentType(ContentType.Application.Xml)
                         body = "<Request>\n" +

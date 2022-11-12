@@ -46,13 +46,13 @@ class UpdateImageWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         try {
-            Log.d("DEBUG_D","BEGIN")
+//            Log.d("DEBUG_D","BEGIN")
             val images = imageDao.getUserImages()
-            Log.d("DEBUG_D",images.size.toString())
-            images.map {
+//            Log.d("DEBUG_D",images.size.toString())
+            images.filter{it.nombre.isNotBlank()}.map {
                 Log.d("DEBUG_D",it.nombre)
                 val request = ImageRequest.Builder(applicationContext)
-                    .memoryCacheKey(it.userGui)
+//                    .memoryCacheKey(it.userGui)
                     .data(it.picture)
                     .build()
                 imageLoader.executeBlocking(request)

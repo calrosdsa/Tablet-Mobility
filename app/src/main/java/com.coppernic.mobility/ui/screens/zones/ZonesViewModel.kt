@@ -3,11 +3,14 @@ package com.coppernic.mobility.ui.screens.zones
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.coppernic.mobility.data.dto.mustering.DataX
 import com.coppernic.mobility.data.dto.mustering.MusteringByZonaDto
 import com.coppernic.mobility.domain.useCases.GetMusteringByZone
 import com.coppernic.mobility.domain.util.ObservableLoadingCounter
+import com.coppernic.mobility.domain.util.UiMessage
 import com.coppernic.mobility.domain.util.UiMessageManager
 import com.coppernic.mobility.domain.util.collectData
+import com.coppernic.mobility.util.Resource
 import com.coppernic.mobility.util.constants.Params
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -25,7 +28,8 @@ class ZonesViewModel @Inject constructor(
     val ciudadParam = savedStateHandle.get<String>(Params.CIUDAD_PARAM)
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
-    private val musteringByZona = MutableStateFlow<MusteringByZonaDto?>(null)
+    private val query = MutableStateFlow("")
+    private val musteringByZona = MutableStateFlow<List<DataX>>(emptyList())
     val state :StateFlow<ZoneState> = combine(
         loadingCounter.observable,
         uiMessageManager.message,
@@ -46,18 +50,35 @@ class ZonesViewModel @Inject constructor(
         if(zoneParam != null && ciudadParam != null){
             viewModelScope.launch {
              do{
-            getMusteringByZoneFoo(zoneParam.toInt(),ciudadParam.toInt())
-                 delay(5000)
+            getMusteringByZoneFoo(zoneParam.toInt(),ciudadParam.toInt(),query.value)
+                 delay(3000)
              }while(isActive)
             }
         }
 
     }
 
-
-    fun getMusteringByZoneFoo(zoneId:Int, ciudadId:Int){
+    fun search(query:String){
         viewModelScope.launch {
-            getMusteringByZone(zoneId,ciudadId).collectData(loadingCounter,uiMessageManager,musteringByZona)
+            this@ZonesViewModel.query.emit(query)
+        }
+    }
+
+    fun getMusteringByZoneFoo(zoneId:Int, ciudadId:Int,query: String){
+        viewModelScope.launch {
+//            getMusteringByZone(zoneId,ciudadId).collectData(loadingCounter,uiMessageManager,musteringByZona)
+            getMusteringByZone(zoneId,ciudadId,query).collect{result->
+                when(result){
+                    is Resource.Error -> {
+                        result.message?.let { UiMessage(it) }
+                            ?.let { uiMessageManager.emitMessage(it) }
+                    }
+                    is Resource.Loading -> {}
+                    is Resource.Success -> {
+                        result.data?.let { this@ZonesViewModel.musteringByZona.emit(it) }
+                    }
+                }
+            }
         }
     }
 }

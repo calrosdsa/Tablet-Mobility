@@ -11,6 +11,7 @@ class TaskAppTasksInitializer @Inject constructor(
     private val appTasks: Lazy<AppTasks>
 ) :TaskAppInitializer {
     override fun init(application: Application) {
-        appTasks.get().sendMarcaciones()
+//        appTasks.get().sendMarcaciones()
+        appTasks.get().getDataServer()
     }
 }

@@ -28,7 +28,7 @@ class EstadoViewModel @Inject constructor(
     val ciudadParam = savedStateHandle.get<String>(Params.CIUDAD_PARAM)
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
-    private val query = MutableStateFlow<String>("")
+    private val query = MutableStateFlow("")
     private val musteringByZona = MutableStateFlow<List<DataX>>(emptyList())
     val state :StateFlow<PersonState> = combine(
         loadingCounter.observable,
@@ -51,7 +51,7 @@ class EstadoViewModel @Inject constructor(
             viewModelScope.launch {
              do{
             getMusteringByZoneFoo(estadoPerson.toInt(),ciudadParam.toInt(),query.value)
-                 delay(5000)
+                 delay(3000)
              }while(isActive)
             }
         }

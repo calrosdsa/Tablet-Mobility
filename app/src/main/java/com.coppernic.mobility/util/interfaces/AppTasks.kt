@@ -9,6 +9,7 @@ interface AppTasks {
     fun backUpRoom()
     fun sendMarcaciones()
     fun sendMarcacion()
+//    fun updateImage()
 
 //    fun syncFollowedShows()
 //    fun syncFollowedShowsWhenIdle()

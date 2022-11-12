@@ -46,10 +46,11 @@ class SendMarcacionesWorker @AssistedInject constructor(
         }
 //        Log.d("RIO_WORKER","BEGIN2")
         val config = configuraciones[0]
+        Log.d("DEBUG_D",config.interfaz.toString())
         //obtener data marcaciones
         val marcaciones = marcacionDao.getMarcacionesPendientes()
-        Log.d("SendRioWorker","BEGIN TASK")
-        Log.d("SendRioWorker",marcaciones.size.toString())
+//        Log.d("SendRioWorker","BEGIN TASK")
+//        Log.d("SendRioWorker",marcaciones.size.toString())
 
         // INTENTAR ENVIAR CON RIO
         val sslFactory = SSLFactory.builder()
@@ -69,7 +70,7 @@ class SendMarcacionesWorker @AssistedInject constructor(
         }
         //make login
         try {
-            Log.d("SendRioWorker", "https://${config.url_controladora}/Login")
+//            Log.d("SendRioWorker", "https://${config.url_controladora}/Login")
             var response: HttpResponse = client.submitForm(
                 url = "https://${config.url_controladora}/Login",
                 formParameters = Parameters.build {
@@ -80,16 +81,16 @@ class SendMarcacionesWorker @AssistedInject constructor(
             )
             Log.d("SendRioWorker", response.receive() as String)
             if (response.receive() as String == "Login successful") {
-                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
+//                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
                 //enviar encendido de puerta
-                var u1 = "https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update"
-                Log.d("SendRioWorker", u1)
-                response = client.post("https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update") {
+                var u1 = "https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update"
+//                Log.d("SendRioWorker", u1)
+                response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                     contentType(ContentType.Application.Xml)
                     body = "<Request>\n" +
                             "   <BusUpdate>\n" +
                             "     <SetConnected>\n" +
-                            "       <Interface>TecluAdress</Interface>\n" +
+                            "       <Interface>${config.interfaz}</Interface>\n" +
                             "       <IsConnected>True</IsConnected>\n" +
                             "       <SpecificDevices>\n" +
                             "         <None />\n" +
@@ -98,9 +99,9 @@ class SendMarcacionesWorker @AssistedInject constructor(
                             "   </BusUpdate>\n" +
                             "</Request>"
                 }
-                Log.d("SendRioWorker", response.toString())
+//                Log.d("SendRioWorker", response.toString())
                 if (response.receive() as String == "<Response>OK</Response>") {
-                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update") {
+                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                         contentType(ContentType.Application.Xml)
                         body = "<Request>\n" +
                                 "   <BusUpdate>\n" +
@@ -110,23 +111,23 @@ class SendMarcacionesWorker @AssistedInject constructor(
                                 "   </BusUpdate>\n" +
                                 "</Request>"
                     }
-                    if (response.receive() as String == "<Response>OK</Response>") {
-                        Log.d("SendRioWorker", "envio de offline programado exito")
-                    } else {
-                        Log.d("SendRioWorker", "envio de offline programado fallo")
-                    }
+//                    if (response.receive() as String == "<Response>OK</Response>") {
+//                        Log.d("SendRioWorker", "envio de offline programado exito")
+//                    } else {
+//                        Log.d("SendRioWorker", "envio de offline programado fallo")
+//                    }
                 } else {
                     Log.d("SendRioWorker", "envio de online fallo")
                 }
 
                 for ( marcacion in marcaciones){
-                    Log.d("SendRioWorker", "tarjeta ${marcacion.cardCode} enviando")
-                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update") {
+//                    Log.d("SendRioWorker", "tarjeta ${marcacion.cardCode} enviando")
+                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                         contentType(ContentType.Application.Xml)
                         body = "<Request>\n" +
                                 "  <BusUpdate>\n" +
                                 "    <OfflineDecision>\n" +
-                                "      <Interface>TecluAdress</Interface>\n" +
+                                "      <Interface>${config.interfaz}</Interface>\n" +
                                 "      <Reader>${marcacion.tipoMarcacion}</Reader>\n" +
                                 "      <Timestamp>${marcacion.date.toLocalDateTime()}-04:00</Timestamp>\n" +
                                 "      <Card>\n" +

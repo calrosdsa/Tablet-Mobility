@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.DatePicker
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -262,12 +264,18 @@ fun MarcacionItem(
 //                        .size(90.dp, 90.dp)
 //                )
             if(item.cardImageUser == null){
-                ImageUserComponent(
-                    model = defaultImage,
-                    description = item.marcacion!!.cardCode,
+                Image(
+                    bitmap = defaultImage.asImageBitmap(),
+                    contentDescription = item.marcacion!!.cardCode,
                     modifier = Modifier
                         .size(90.dp, 90.dp)
                 )
+//                ImageUserComponent(
+//                    model = defaultImage,
+//                    description = item.marcacion!!.cardCode,
+//                    modifier = Modifier
+//                        .size(90.dp, 90.dp)
+//                )
             }else{
             ImageUserComponent(
                 model = item.cardImageUser?.picture,

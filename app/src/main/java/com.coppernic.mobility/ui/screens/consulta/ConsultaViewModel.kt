@@ -117,7 +117,8 @@ class ConsultaViewModel @Inject constructor(
                 }
                 flow<Access> {
                     try {
-                        if (cardHolder?.estado == "Active") {
+//                        if (cardHolder?.estado == "Active") {
+                        if (credential != null) {
                             if (credential.estado == "Active") {
                                 emit(Access.Accepted("Acceso Permitido", "", Color(0xFF00C853)))
                             } else {
@@ -129,9 +130,10 @@ class ConsultaViewModel @Inject constructor(
                                 }
                                 emit(Access.Denied("Acceso Denegado", detail, Color.Red))
                             }
-                        } else {
-                            emit(Access.Denied("Acceso Denegado", "Usuario Inactivo", Color.Red))
                         }
+//                        } else {
+//                            emit(Access.Denied("Acceso Denegado", "Usuario Inactivo", Color.Red))
+//                        }
                     } catch (e: NullPointerException) {
                         emit(Access.Error("Acceso Denegado", "Error Desconocido", Color.DarkGray))
                     }

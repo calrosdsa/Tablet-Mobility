@@ -69,8 +69,7 @@ interface ImageDao {
           SELECT * 
             FROM credential 
             INNER JOIN image_user AS image ON credential.guidCardHolder  = image.userGui
-            WHERE facilityCode = 213 AND estado = "Active" AND   
-            LOWER(nombre) LIKE '%' || LOWER(:query) || '%' OR
+            WHERE LOWER(nombre) LIKE '%' || LOWER(:query) || '%' OR
                 UPPER(:query) == nombre  LIMIT :limit OFFSET :offset
     """)
     suspend fun getPersonalList(query:String,limit:Int,offset: Int): List<CredentialCard>
