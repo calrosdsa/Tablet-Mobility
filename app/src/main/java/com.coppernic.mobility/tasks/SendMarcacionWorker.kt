@@ -82,7 +82,7 @@ class SendMarcacionWorker @AssistedInject constructor(
             if (response.receive() as String == "Login successful") {
                 Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
                 //enviar encendido de puerta
-                var u1 = "https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update"
+                val u1 = "https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update"
                 Log.d("SendRioWorker", u1)
                 response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
                     contentType(ContentType.Application.Xml)

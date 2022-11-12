@@ -23,10 +23,7 @@ class MarkingViewModel @Inject constructor(
     private val tipoDeMarcacion = MutableStateFlow(TipoDeMarcacion.ALL)
     private val marcacionEstado = MutableStateFlow(MarcacionEstado.All)
     private val dateSelect = MutableStateFlow<OffsetDateTime?>(null)
-
-    val pagingState  = pagingInteractor.flow.debounce(250).cachedIn(viewModelScope)
-
-
+    val pagingState  = pagingInteractor.flow.debounce(50).cachedIn(viewModelScope)
 
     val state1 :StateFlow<MarkedState> = combine(
         sortedOption,
@@ -34,13 +31,15 @@ class MarkingViewModel @Inject constructor(
 //        observerMarcaciones.flow,
         tipoDeMarcacion,
         marcacionEstado,
-    ){sortedOption,tipoDeMarcacion,marcacionState->
+        dateSelect
+    ){sortedOption,tipoDeMarcacion,marcacionState,dateSelect->
         MarkedState(
             sortedOptions = sortedOption,
 //            dayOptions = dayOption,
 //            markers = markers,
             tipoDeMarcacion = tipoDeMarcacion,
-            marcacionState = marcacionState
+            marcacionState = marcacionState,
+            dateSelect = dateSelect
         )
     }.stateIn(
         scope = viewModelScope,
@@ -48,51 +47,11 @@ class MarkingViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000)
     )
     init{
-//        viewModelScope.launch {
-//            imageDao.getPaginatedMarcaciones().let {
-//                Log.d("PAGINATED_RESULT", it.toString())
-//            }
-//        }
-//        pagingInteractor(ObserverMarkers.Params(
-//            sorting = false,
-//            days = 1,
-//            PAGING_CONFIG))
-//        observerMarcaciones(ObserverMarcaciones.Params(
-//            sortedOption.value,
-//            daySortedBy.value,
-//            tipoDeMarcacion.value,
-//            marcacionEstado.value,
-//            dateSelect.value
-//        ))
-//        observerMarkers(ObserverMarkers.Params(true))
-//        viewModelScope.launch {
-//            delay(400)
-//            observerMarcaciones.flow.collect{
-//                state = MarkedState(it)
-//            }
-//        }
-
         viewModelScope.launch {
             sortedOption.collect{
                 updateDataSource()
             }
         }
-
-//        viewModelScope.launch {
-//            tipoDeMarcacion.collect{
-//                updateDataSource()
-//            }
-//        }
-//        viewModelScope.launch {
-//            marcacionEstado.collectLatest {
-//                updateDataSource()
-//            }
-//        }
-//        viewModelScope.launch {
-//            dateSelect.collectLatest {
-//                updateDataSource()
-//            }
-//        }
 
 
     }
@@ -138,7 +97,7 @@ class MarkingViewModel @Inject constructor(
 
     companion object {
         val PAGING_CONFIG = PagingConfig(
-            pageSize = 20,
+            pageSize = 30,
             enablePlaceholders = false,
             initialLoadSize = 20
         )

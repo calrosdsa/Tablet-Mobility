@@ -39,11 +39,11 @@ val navigationItems = listOf(
         title = "Consultas",
         iconImageVector = Icons.Outlined.QueryStats,
     ),
-    HomeNavigationItem.ImageVectorIcon(
-        screen = MainDestination.CAMERA_SCREEN,
-        title = "Scanner Qr",
-        iconImageVector = Icons.Outlined.QrCodeScanner
-    ),
+//    HomeNavigationItem.ImageVectorIcon(
+//        screen = MainDestination.CAMERA_SCREEN,
+//        title = "Scanner Qr",
+//        iconImageVector = Icons.Outlined.QrCodeScanner
+//    ),
     HomeNavigationItem.ImageVectorIcon(
 //        screen = MainDestination.CIUDADES_SCREEN,
         screen = MainDestination.CIUDADES_SCREEN,

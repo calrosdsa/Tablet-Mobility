@@ -40,14 +40,14 @@ class DeleteMarcacionesWorker @AssistedInject constructor(
 //                val result1 = it.fecha.isBefore(past)
 //                Log.d("ACCION_RESULT2",  result1.toString())
             }.map {
-                Log.d("ACCION_RESULT2", it.toString())
+//                Log.d("ACCION_RESULT2", it.toString())
             marcacionDao.deleteMarcacion(it.fecha)
                 it.fecha
             }
-            Log.d("ACCION_RESULT",  resultM.size.toString())
+//            Log.d("ACCION_RESULT",  resultM.size.toString())
         }catch(e:Throwable){
-            Log.d("ACCION_RESULT", "ERROR IN WORK")
-            Log.d("ACCION_RESULT", e.localizedMessage?:"Unexpected")
+//            Log.d("ACCION_RESULT", "ERROR IN WORK")
+//            Log.d("ACCION_RESULT", e.localizedMessage?:"Unexpected")
             return Result.failure()
 //                Log.d("TASK_STATE","Something goes wrong")
 

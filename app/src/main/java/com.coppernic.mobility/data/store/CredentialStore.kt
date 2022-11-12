@@ -1,5 +1,6 @@
 package com.coppernic.mobility.data.store
 
+import android.util.Log
 import com.coppernic.mobility.data.ApiService
 import com.coppernic.mobility.data.result.mapper.toCrendentialEntity
 import com.coppernic.mobility.data.models.entities.Credential
@@ -39,9 +40,10 @@ object CredentialModule{
                 }
             },
             writer = {_,entries->
-//                Log.d("CREDENTIAL_RESULTS",entries.toString())
-            val credentialResults = entries.data.map {
-                    it.toCrendentialEntity()}
+            val credentialResults = entries.data.filter { it.facilityCode == 213 && it.estado == "Active" }.map {
+                    it.toCrendentialEntity()
+            }
+//                Log.d("DEBUG_D",credentialResults.size.toString())
                 credentialDao.deleteAll()
                 credentialDao.insertAllCredential(credentialResults)
             },

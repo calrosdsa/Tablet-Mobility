@@ -9,9 +9,9 @@ data class Cardholder(
     val guid: String,
 //    val firstName: String? = null,
 //    val lastName: String? = null,
-    val ci: String ?= null,
+    val ci: String = "",
 //    val picture: Bitmap? = null ,
-    val descriptions: String? = null,
-    val empresa: String? = null,
-    val estado: String? = null,
+    val descriptions: String? = "",
+    val empresa: String? = "",
+    val estado: String? = "",
 ):AppEntity

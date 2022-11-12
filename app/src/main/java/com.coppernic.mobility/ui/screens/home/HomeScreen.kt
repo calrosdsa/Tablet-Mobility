@@ -63,9 +63,9 @@ fun HomeScreen(
     BackHandler {
         context.finishAffinity()
     }
-    LaunchedEffect(key1 = viewModel, block = {
-        Log.d("ACCESS_DEBUG","RENDER")
-    })
+//    LaunchedEffect(key1 = viewModel, block = {
+//        Log.d("ACCESS_DEBUG","RENDER")
+//    })
 
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {

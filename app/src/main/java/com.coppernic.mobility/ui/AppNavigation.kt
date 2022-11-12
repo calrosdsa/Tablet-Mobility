@@ -27,27 +27,27 @@ import com.coppernic.mobility.util.constants.Params
 import com.coppernic.mobility.ui.screens.estadoPerson.EstadoPerson
 import com.coppernic.mobility.ui.screens.qr.QrScreen
 import com.google.accompanist.navigation.animation.composable
+//./gradlew :benchmark:pixel2Api29BenchmarkAndroidTest -P android.testIntrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.homeGraph(
     navController: NavController,
     scaffoldState: ScaffoldState,
 ){
-    composableDetail(MainDestination.INITIAL_SCREEN ){
+    composable(MainDestination.INITIAL_SCREEN ){
         ValidationScreen(navController, scaffoldState)
     }
-    composableDetail(MainDestination.ACCESS_ROUTE){
+    composable(MainDestination.ACCESS_ROUTE){
         AccessConfigScreen(navController, scaffoldState)
     }
 
     composable(MainDestination.HOME_ROUTE){
         HomeScreen(navController,scaffoldState)
     }
-    composable(MainDestination.SPLASH_SCREEN){
-        SplashScreen(navController)
-    }
-
-    composableDetail(MainDestination.ESTADO_PERSON + "?estado={${Params.ESTADO_PERSON_P}}&" +
+//    composable(MainDestination.SPLASH_SCREEN){
+//        SplashScreen(navController)
+//    }
+    composable(MainDestination.ESTADO_PERSON + "?estado={${Params.ESTADO_PERSON_P}}&" +
             "ciudadId={${Params.CIUDAD_PARAM}}", arguments = listOf(
         navArgument(Params.ESTADO_PERSON_P){
             type = NavType.StringType
@@ -60,7 +60,7 @@ fun NavGraphBuilder.homeGraph(
     ){
         EstadoPerson(navController , scaffoldState)
     }
-    composableDetail(MainDestination.WAITING_SCREEN + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
+    composable(MainDestination.WAITING_SCREEN + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
             "facility_code={${Params.FACILITY_CODE_P}}&card_number={${Params.CARD_NUMBER_P}}",
         arguments = listOf(
             navArgument(Params.TYPE_ACCESS_PARAM){
@@ -78,7 +78,7 @@ fun NavGraphBuilder.homeGraph(
         )){
         WaitingScreen(navController = navController,scaffoldState)
     }
-    composableDetail(MainDestination.MUSTERONG_ZONE+ "?zoneId={${Params.ZONE_PARAM}}&" +
+    composable(MainDestination.MUSTERONG_ZONE+ "?zoneId={${Params.ZONE_PARAM}}&" +
             "ciudadId={${Params.CIUDAD_PARAM}}", arguments = listOf(
         navArgument(Params.ZONE_PARAM){
             type = NavType.StringType
@@ -91,7 +91,7 @@ fun NavGraphBuilder.homeGraph(
     ){
         ZoneScreen(navController , scaffoldState)
     }
-    composableDetail(MainDestination.MANUAL_ROUTE + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
+    composable(MainDestination.MANUAL_ROUTE + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
             "is_consulta={${Params.IS_CONSULTA}}", arguments = listOf(
         navArgument(Params.TYPE_ACCESS_PARAM){
             type = NavType.StringType
@@ -104,29 +104,29 @@ fun NavGraphBuilder.homeGraph(
             )){
         ManualMarkerScreen(navController)
     }
-    composableDetail(MainDestination.CONFIGURATION_ROUTE){
+    composable(MainDestination.CONFIGURATION_ROUTE){
         SettingScreen(navController,scaffoldState)
     }
-    composableDetail(MainDestination.SERVER_ROUTE){
-        ServidorScreen()
-    }
-    composableDetail(MainDestination.MUSTERING_ROUTE + "/{${Params.CIUDAD_PARAM}}"){
+//    composable(MainDestination.SERVER_ROUTE){
+//        ServidorScreen()
+//    }
+    composable(MainDestination.MUSTERING_ROUTE + "/{${Params.CIUDAD_PARAM}}"){
         MusteringScreen(navController,scaffoldState)
     }
-    composableDetail(MainDestination.MARKINGS_ROUTE){
+    composable(MainDestination.MARKINGS_ROUTE){
         MarkedsScreen(navController,scaffoldState)
 //        PaginatedMarcacionesScreen(navController , scaffoldState )
     }
-    composableDetail(MainDestination.CIUDADES_SCREEN){
+    composable(MainDestination.CIUDADES_SCREEN){
         CiudadesScreen(navController,scaffoldState)
     }
-    composableDetail(MainDestination.USER_DETAIL + "/{${Params.GUID_USER}}"){
+    composable(MainDestination.USER_DETAIL + "/{${Params.GUID_USER}}"){
         DetailScreen(navController)
     }
-    composableDetail(MainDestination.USERS_ROUTE){
+    composable(MainDestination.USERS_ROUTE){
         UsersScreem(navController)
     }
-    composableDetail(MainDestination.CONSULTA_SCREEN + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
+    composable(MainDestination.CONSULTA_SCREEN + "?type_access={${Params.TYPE_ACCESS_PARAM}}&" +
             "facility_code={${Params.FACILITY_CODE_P}}&card_number={${Params.CARD_NUMBER_P}}",
         arguments = listOf(
             navArgument(Params.TYPE_ACCESS_PARAM){
@@ -144,22 +144,22 @@ fun NavGraphBuilder.homeGraph(
         )){
         ConsultaScreen(navController = navController,scaffoldState)
     }
-    composableDetail(MainDestination.CAMERA_SCREEN){
-        CameraScreen(navController, scaffoldState)
-    }
-    composableDetail(MainDestination.QR_SCREEN + "?${Params.QR_PARAM}={${Params.QR_PARAM}}",
-    arguments = listOf(
-        navArgument(Params.QR_PARAM){
-            type = NavType.StringType
-            nullable = true
-        })){
-        QrScreen(navController , scaffoldState )
-    }
+//    composable(MainDestination.CAMERA_SCREEN){
+//        CameraScreen(navController, scaffoldState)
+//    }
+//    composable(MainDestination.QR_SCREEN + "?${Params.QR_PARAM}={${Params.QR_PARAM}}",
+//    arguments = listOf(
+//        navArgument(Params.QR_PARAM){
+//            type = NavType.StringType
+//            nullable = true
+//        })){
+//        QrScreen(navController , scaffoldState )
+//    }
 
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.composableDetail(
+fun NavGraphBuilder.composable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     content: @Composable () -> Unit,
@@ -196,3 +196,4 @@ fun NavGraphBuilder.composableDetail(
         content()
     }
 }
+

@@ -42,6 +42,7 @@ private fun getNetworkStatusLollipop(context: Context): Flow<NetworkStatus> = ca
         }
 
         override fun onLost(network: Network) {
+//            Toast.makeText(context, "Desconectado al Servidor", Toast.LENGTH_SHORT).show()
             availabilityCheckJob?.cancel()
             trySend(NetworkStatus.Unavailable)
         }

@@ -32,8 +32,11 @@ fun CiudadesScreen(
             viewModel.clearMessage(message.id)
         })
     }
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) {padding->
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(padding)) {
         if(state.ciudades.isNotEmpty()){
 
         TopBarComponent(openMenu = {
@@ -65,4 +68,5 @@ fun CiudadesScreen(
 //        }
         }
     }
+}
 }

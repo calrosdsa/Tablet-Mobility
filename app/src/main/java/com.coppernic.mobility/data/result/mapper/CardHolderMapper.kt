@@ -4,6 +4,7 @@ import com.coppernic.mobility.data.dto.cardHolder.Data
 import com.coppernic.mobility.data.dto.credentials.CredentialDto
 import com.coppernic.mobility.data.models.entities.Cardholder
 import com.coppernic.mobility.data.models.entities.Credential
+import com.coppernic.mobility.data.models.entities.ImageUser
 
 fun Data.toCardHolderEntity(): Cardholder {
     return Cardholder(
@@ -26,5 +27,13 @@ fun CredentialDto.toCrendentialEntity(): Credential {
      facilityCode = facilityCode,
      uniqueId = uniqueId,
     estado = estado ,
+    )
+}
+
+fun Data.toImageUser():ImageUser {
+    return ImageUser(
+        userGui = guid,
+        nombre = "$firstName  $lastName",
+//        picture = picture
     )
 }

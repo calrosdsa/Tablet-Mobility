@@ -3,10 +3,7 @@ package com.coppernic.mobility.ui.screens.zones
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -33,50 +30,52 @@ fun ZoneScreen(
     val coroutine = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {
         state.zone?.data?.let { zone ->
+            Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
 
-            Column() {
-                TopBarComponent(openMenu = {
-                    coroutine.launch { scaffoldState.drawerState.open() }
-                }) {
-                    navController.popBackStack()
-                }
-                Divider()
-                SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.loading),
-                    onRefresh = {
-                        viewModel.zoneParam?.let {
-                            viewModel.ciudadParam?.let { it1 ->
-                                viewModel.getMusteringByZoneFoo(
-                                    it.toInt(), it1.toInt()
-                                )
+                Column(modifier = Modifier.padding(padding)) {
+                    TopBarComponent(openMenu = {
+                        coroutine.launch { scaffoldState.drawerState.open() }
+                    }) {
+                        navController.popBackStack()
+                    }
+                    Divider()
+                    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.loading),
+                        onRefresh = {
+                            viewModel.zoneParam?.let {
+                                viewModel.ciudadParam?.let { it1 ->
+                                    viewModel.getMusteringByZoneFoo(
+                                        it.toInt(), it1.toInt()
+                                    )
+                                }
+                            }
+                        },
+                        indicator = { state, trigger ->
+                            SwipeRefreshIndicator(
+                                state = state,
+                                refreshTriggerDistance = trigger,
+                                scale = true
+                            )
+                        }
+                    ) {
+                        zone.let { result ->
+                            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                items(result) {
+                                    ZoneItemMarcacion(item = it)
+                                    Divider()
+                                }
                             }
                         }
-                    },
-                    indicator = { state, trigger ->
-                        SwipeRefreshIndicator(
-                            state = state,
-                            refreshTriggerDistance = trigger,
-                            scale = true
-                        )
-                    }
-                ) {
-                    zone.let { result ->
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
-                            items(result) {
-                                ZoneItemMarcacion(item = it)
-                                Divider()
-                            }
-                        }
                     }
                 }
-            }
-            if (zone.isEmpty()) {
-                Text(
-                    text = "No hay Datos disponibles",
-                    style = MaterialTheme.typography.h6,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
+                if (zone.isEmpty()) {
+                    Text(
+                        text = "No hay Datos disponibles",
+                        style = MaterialTheme.typography.h6,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
+                }
             }
         }
     }

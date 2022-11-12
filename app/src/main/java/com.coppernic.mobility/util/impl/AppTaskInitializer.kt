@@ -1,15 +1,16 @@
 package com.coppernic.mobility.util.impl
 
 import android.app.Application
-import com.coppernic.mobility.util.interfaces.AppInitializer
+import com.coppernic.mobility.util.interfaces.TaskAppInitializer
 import com.coppernic.mobility.util.interfaces.AppTasks
 import javax.inject.Inject
 import dagger.Lazy
+import kotlinx.coroutines.delay
 
-class AppTasksInitializer @Inject constructor(
+class TaskAppTasksInitializer @Inject constructor(
     private val appTasks: Lazy<AppTasks>
-) :AppInitializer {
+) :TaskAppInitializer {
     override fun init(application: Application) {
-        appTasks.get().deleteMarcaciones()
+        appTasks.get().sendMarcaciones()
     }
 }

@@ -15,9 +15,9 @@ class AppPreferencesImpl @Inject constructor(
     override val passwordStream: MutableStateFlow<String>
     override var password: String by PasswordPreferenceDelegate("password_pref", "1234")
     override val urlServidorStream: MutableStateFlow<String>
-    override var urlServidor: String by UrlServidorPreferenceDelegate("url_servidor_pref","http://172.20.10.56:91")
+    override var urlServidor: String by UrlServidorPreferenceDelegate("url_servidor_pref","http://10.0.1.181:12015")
     override val initialScreenStream: MutableStateFlow<String>
-    override var initialScreen: String by InitialScreenPreferenceDelegate("initial_screen",MainDestination.INITIAL_SCREEN)
+    override var initialScreen: String by InitialScreenPreferenceDelegate("initial_screen",MainDestination.HOME_ROUTE)
     override val accessPinStream: MutableStateFlow<String>
     override var accessPin: String by AccessPinPreferenceDelegate("access_pin","4321")
     override val tableNameStream: MutableStateFlow<String>

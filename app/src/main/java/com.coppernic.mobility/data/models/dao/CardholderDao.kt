@@ -1,14 +1,14 @@
 package com.coppernic.mobility.data.models.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.coppernic.mobility.data.models.entities.Cardholder
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class CardholderDao: DaoEntity<Cardholder>(){
+
+    @Transaction
+    override suspend fun withTransaction(tx: suspend () -> Unit) = tx()
 
     @Query("SELECT * FROM cardholder")
     abstract fun getCardholder(): Flow<List<Cardholder>>

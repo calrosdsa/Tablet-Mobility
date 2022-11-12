@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appTasks.getDataServer()
         installSplashScreen()
         setContent {
             val initialRoute = appPreferences.initialScreen
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
 //            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
 //            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE))
-        appTasks.sendMarcaciones()
+//        appTasks.sendMarcaciones()
     }
 
     override fun onDestroy() {

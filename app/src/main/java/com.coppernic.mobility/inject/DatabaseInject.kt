@@ -53,12 +53,12 @@ object DatabaseDaoModule {
     fun provideMarcacionesDao(db: AppDatabase) = db.marcacionDao()
     @Provides
     fun provideCiudadDao(db: AppDatabase) = db.ciudadDao()
-
     @Provides
     fun provideImageDao(db:AppDatabase) = db.imageDao()
-
     @Provides
     fun provideAccessDao(db:AppDatabase) = db.accessDao()
+    @Provides
+    fun provideFts4UserDao(db:AppDatabase) = db.userFts4()
 }
 
 @InstallIn(SingletonComponent::class)

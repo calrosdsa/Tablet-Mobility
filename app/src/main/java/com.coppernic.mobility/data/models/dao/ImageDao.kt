@@ -29,9 +29,14 @@ interface ImageDao {
 
     @Query("SELECT * FROM IMAGE_USER WHERE userGui = :guid")
     fun getUserImage(guid:String):ImageUser
+    @Query("SELECT * FROM image_user")
+    fun getUserImages():List<ImageUser>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(imageUser: ImageUser)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(userImages:List<ImageUser>)
     @Query("DELETE  FROM image_user")
     suspend fun  deleteAllImages()
 
@@ -64,7 +69,8 @@ interface ImageDao {
           SELECT * 
             FROM credential 
             INNER JOIN image_user AS image ON credential.guidCardHolder  = image.userGui
-            WHERE LOWER(nombre) LIKE '%' || LOWER(:query) || '%' OR
+            WHERE facilityCode = 213 AND estado = "Active" AND   
+            LOWER(nombre) LIKE '%' || LOWER(:query) || '%' OR
                 UPPER(:query) == nombre  LIMIT :limit OFFSET :offset
     """)
     suspend fun getPersonalList(query:String,limit:Int,offset: Int): List<CredentialCard>

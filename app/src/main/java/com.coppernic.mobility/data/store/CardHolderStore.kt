@@ -2,6 +2,10 @@
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Log
+import android.widget.Toast
+import com.coppernic.mobility.R
 import com.coppernic.mobility.data.ApiService
 import com.coppernic.mobility.data.models.entities.Cardholder
 import com.coppernic.mobility.data.models.dao.CardholderDao
@@ -13,13 +17,17 @@ import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.coppernic.mobility.data.result.mapper.toCardHolderEntity
+import com.coppernic.mobility.data.result.mapper.toImageUser
 import com.coppernic.mobility.util.interfaces.AppPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Singleton
 
 typealias CardHolderStore = Store<Unit, List<Cardholder>>
@@ -33,12 +41,13 @@ object CardHolderModule{
     fun provideCardHolderStore (
         apiService: ApiService,
         cardholderDao: CardholderDao,
-        appUtil: AppUtil,
+//        appUtil: AppUtil,
         appPreferences: AppPreferences,
         imageDao: ImageDao,
         @ApplicationContext context:Context
     ):CardHolderStore = StoreBuilder.from(
         fetcher = Fetcher.of {
+
             apiService.getCardHolders().data
         },
         sourceOfTruth = SourceOfTruth.of(
@@ -54,25 +63,24 @@ object CardHolderModule{
               }
                    },
           writer ={_:Unit,entries->
-             val entriesR = entries.filter { it.unidadOrganizativa != "Visita" }.map {
-                 try {
-                 imageDao.insert(ImageUser(
-                     userGui = it.guid,
-                     nombre = "${it.firstName}  ${it.lastName}",
-                     picture =  appUtil.getImageBitmap(context,"${appPreferences.urlServidor}/imagenes/${it.picture}"),
-                 ))
-                 }catch (e:Throwable){
-                     imageDao.insert(ImageUser(
-                         userGui = it.guid,
-                         nombre = "${it.firstName}  ${it.lastName}",
-                         picture =  appUtil.getImageBitmap(context,"https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg"),
-                     ))
-//                     Log.d("CARD_HOLDER_RESULTS",e.localizedMessage?:"Desconocido")
-                 }
-                it.toCardHolderEntity()
+                  cardholderDao.withTransaction {
+              runBlocking {
+              val entriesForImage = async {
+                  entries.filter { it.picture.isNotBlank()}.map{
+                      it.toImageUser().copy(
+                          picture = "${appPreferences.urlServidor}/imagenes/${it.picture}"
+                      )
               }
+              }
+             val entriesR = async {
+                 entries.map {
+                     it.toCardHolderEntity()
+                 }
+             }
+                  imageDao.deleteAllImages()
               cardholderDao.deleteAll()
-              cardholderDao.insertAll(entriesR)
+              imageDao.insertAll(entriesForImage.await())
+              cardholderDao.insertAll(entriesR.await())
 //              entries.map {
 //                  cardholderDao.insert(
 //                      Cardholder(
@@ -89,8 +97,9 @@ object CardHolderModule{
 //                      single_entry
 //                  picture = appUtil.getImageBitmap(context,it.picture),
 //                      fecha = currentDate
-
-//              cardholderDao.insertAll(cardResults)
+                  //              cardholderDao.insertAll(cardResults)
+              }
+              }
           },
           delete = {
                    cardholderDao.deleteAll()

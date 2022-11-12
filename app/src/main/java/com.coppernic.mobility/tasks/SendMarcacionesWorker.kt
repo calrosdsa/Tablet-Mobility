@@ -48,6 +48,7 @@ class SendMarcacionesWorker @AssistedInject constructor(
         val config = configuraciones[0]
         //obtener data marcaciones
         val marcaciones = marcacionDao.getMarcacionesPendientes()
+        Log.d("SendRioWorker","BEGIN TASK")
         Log.d("SendRioWorker",marcaciones.size.toString())
 
         // INTENTAR ENVIAR CON RIO
@@ -79,16 +80,16 @@ class SendMarcacionesWorker @AssistedInject constructor(
             )
             Log.d("SendRioWorker", response.receive() as String)
             if (response.receive() as String == "Login successful") {
-//                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
+                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
                 //enviar encendido de puerta
-                var u1 = "https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update"
-//                Log.d("SendRioWorker", u1)
-                response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
+                var u1 = "https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update"
+                Log.d("SendRioWorker", u1)
+                response = client.post("https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update") {
                     contentType(ContentType.Application.Xml)
                     body = "<Request>\n" +
                             "   <BusUpdate>\n" +
                             "     <SetConnected>\n" +
-                            "       <Interface>${config.interfaz}</Interface>\n" +
+                            "       <Interface>TecluAdress</Interface>\n" +
                             "       <IsConnected>True</IsConnected>\n" +
                             "       <SpecificDevices>\n" +
                             "         <None />\n" +
@@ -97,9 +98,9 @@ class SendMarcacionesWorker @AssistedInject constructor(
                             "   </BusUpdate>\n" +
                             "</Request>"
                 }
-//                Log.d("SendRioWorker", response.toString())
+                Log.d("SendRioWorker", response.toString())
                 if (response.receive() as String == "<Response>OK</Response>") {
-                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
+                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update") {
                         contentType(ContentType.Application.Xml)
                         body = "<Request>\n" +
                                 "   <BusUpdate>\n" +
@@ -120,12 +121,12 @@ class SendMarcacionesWorker @AssistedInject constructor(
 
                 for ( marcacion in marcaciones){
                     Log.d("SendRioWorker", "tarjeta ${marcacion.cardCode} enviando")
-                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/${config.interfaz}/Update") {
+                    response = client.post("https://${config.url_controladora}/ExternalIntegrations/TecluAdress/Update") {
                         contentType(ContentType.Application.Xml)
                         body = "<Request>\n" +
                                 "  <BusUpdate>\n" +
                                 "    <OfflineDecision>\n" +
-                                "      <Interface>${config.interfaz}</Interface>\n" +
+                                "      <Interface>TecluAdress</Interface>\n" +
                                 "      <Reader>${marcacion.tipoMarcacion}</Reader>\n" +
                                 "      <Timestamp>${marcacion.date.toLocalDateTime()}-04:00</Timestamp>\n" +
                                 "      <Card>\n" +

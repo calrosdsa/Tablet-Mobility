@@ -3,6 +3,8 @@ package com.coppernic.mobility.inject
 import android.content.Context
 import androidx.work.WorkManager
 import com.coppernic.mobility.util.impl.AppTasksImpl
+import com.coppernic.mobility.util.impl.TaskAppTasksInitializer
+import com.coppernic.mobility.util.interfaces.TaskAppInitializer
 import com.coppernic.mobility.util.interfaces.AppTasks
 import dagger.Binds
 import dagger.Module
@@ -25,9 +27,9 @@ object TasksModule {
 @InstallIn(SingletonComponent::class)
 @Module
 abstract class TasksModuleBinds {
-//    @Binds
+    @Binds
 //    @IntoSet
-//    abstract fun provideAppTasksInitializer(bind: AppTasksInitializer): AppInitializer
+    abstract fun provideAppTasksInitializer(bind: TaskAppTasksInitializer): TaskAppInitializer
 
     @Binds
     @Singleton

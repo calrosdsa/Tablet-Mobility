@@ -27,32 +27,32 @@ fun PaginatedMarcacionesScreen(
     scaffoldState: ScaffoldState,
     viewModel : MarkingPViewModel = hiltViewModel()
 ){
-    val paginItems = rememberFlowWithLifecycle(flow = viewModel.pagingState).collectAsLazyPagingItems()
-    LazyColumn(modifier = Modifier.fillMaxSize()){
-        item { 
-            Text(text = paginItems.itemCount.toString())
-        }
-        items(items = paginItems){item->
-            MarcacionItem(
-                item = item,
-                onClick = { navController.navigate(MainDestination.USER_DETAIL + "/${item?.cardImageUser?.userGui}"){
-                    launchSingleTop = true
-                } }
-            )
-            Divider()
-        }
-
-        if (paginItems.loadState.append == LoadState.Loading) {
-            item {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp)
-                ) {
-                    CircularProgressIndicator(Modifier.align(Alignment.Center))
-                }
-            }
-        }
-
-    }
+//    val paginItems = rememberFlowWithLifecycle(flow = viewModel.pagingState).collectAsLazyPagingItems()
+//    LazyColumn(modifier = Modifier.fillMaxSize()){
+//        item {
+//            Text(text = paginItems.itemCount.toString())
+//        }
+//        items(items = paginItems){item->
+//            MarcacionItem(
+//                item = item,
+//                onClick = { navController.navigate(MainDestination.USER_DETAIL + "/${item?.cardImageUser?.userGui}"){
+//                    launchSingleTop = true
+//                } }
+//            )
+//            Divider()
+//        }
+//
+//        if (paginItems.loadState.append == LoadState.Loading) {
+//            item {
+//                Box(
+//                    Modifier
+//                        .fillMaxWidth()
+//                        .padding(24.dp)
+//                ) {
+//                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+//                }
+//            }
+//        }
+//
+//    }
 }

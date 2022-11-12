@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +25,7 @@ import com.coppernic.mobility.ui.components.VerticalGrid
 import com.coppernic.mobility.ui.rememberStateWithLifecycle
 import com.coppernic.mobility.util.constants.MainDestination
 import com.coppernic.mobility.R
+import com.coppernic.mobility.ui.components.ImageUserComponent
 import com.coppernic.mobility.util.constants.Params
 
 @Composable
@@ -153,14 +153,20 @@ fun WaitingScreen(
                                             .padding(vertical = 30.dp)
                                     )
                                 } else {
-
-                                    Image(
-                                        bitmap = it.picture.asImageBitmap(),
-                                        contentDescription = "AccessProfile",
+                                    ImageUserComponent(
+                                        model = it.picture,
+                                        description = it.ci,
                                         modifier = Modifier
                                             .size(250.dp)
                                             .padding(vertical = 30.dp)
                                     )
+//                                    Image(
+//                                        bitmap = it.picture.asImageBitmap(),
+//                                        contentDescription = "AccessProfile",
+//                                        modifier = Modifier
+//                                            .size(250.dp)
+//                                            .padding(vertical = 30.dp)
+//                                    )
                                 }
                                 Text(
                                     text = it.personName ?: "N/A",
@@ -168,7 +174,7 @@ fun WaitingScreen(
                                         fontWeight = FontWeight.SemiBold,
                                         color = MaterialTheme.colors.background
                                     ),
-                                    maxLines = 2,
+                                    maxLines = 1,
                                     textAlign = TextAlign.Center
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))

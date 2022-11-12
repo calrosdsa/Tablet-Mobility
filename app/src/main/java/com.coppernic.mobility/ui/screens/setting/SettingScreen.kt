@@ -98,7 +98,8 @@ fun SettingScreen(
             FloatingActionButton(onClick = { viewModel.executeAsync() }) {
                 Icon(imageVector = Icons.Default.Refresh, contentDescription ="resincronizar" )
             }
-        }
+        },
+    modifier = Modifier.fillMaxSize()
     ) { padding ->
         Box(modifier = Modifier
             .fillMaxSize()

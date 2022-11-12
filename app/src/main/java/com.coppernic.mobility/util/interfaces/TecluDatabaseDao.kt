@@ -9,6 +9,6 @@ interface TecluDatabaseDao {
      fun marcacionDao(): MarcacionDao
      fun ciudadDao(): CiudadDao
      fun imageDao():ImageDao
-
      fun accessDao():AccessDao
+     fun userFts4():UserCardFtsDao
 }

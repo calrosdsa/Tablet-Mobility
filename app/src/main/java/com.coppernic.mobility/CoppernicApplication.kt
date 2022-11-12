@@ -3,19 +3,20 @@ package com.coppernic.mobility
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.coppernic.mobility.util.interfaces.TaskAppInitializer
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
 class CoppernicApplication:Application(), Configuration.Provider{
-//    @Inject lateinit var initializers: AppInitializer
+    @Inject lateinit var initializers: TaskAppInitializer
     @Inject lateinit var workerFactory: HiltWorkerFactory
 
 
     override fun onCreate() {
         super.onCreate()
-//        initializers.init(this)
+        initializers.init(this)
         AndroidThreeTen.init(this)
     }
 

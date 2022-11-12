@@ -15,6 +15,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -111,6 +112,7 @@ fun ValidationScreen(
                 LottieAnimation(
                     composition = composition,
                     progress = { progress },
+                    modifier = Modifier.testTag("logo_animation")
                 )
                 Text(
                     text = "Ingrese el código o escaneé su tarjeta para continuar",
@@ -127,7 +129,7 @@ fun ValidationScreen(
                 }
                 ) {
                     Text(
-                        text = "Ingresar Código",
+                        text = " Ingresar Código",
                         style = MaterialTheme.typography.h6,
                         color = MaterialTheme.colors.background
                     )

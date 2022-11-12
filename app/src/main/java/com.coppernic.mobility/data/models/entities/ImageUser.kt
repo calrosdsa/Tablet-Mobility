@@ -9,6 +9,6 @@ import androidx.room.PrimaryKey
 )
 data class ImageUser(
     @PrimaryKey val userGui:String,
-    val picture:Bitmap? = null,
-    val nombre:String? = " ",
+    val picture:String = "",
+    val nombre:String = "",
 )

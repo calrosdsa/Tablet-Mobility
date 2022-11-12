@@ -37,41 +37,44 @@ class GetDataServer @AssistedInject constructor(
         const val TAG = "get_data_server"
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
-        val telephoneManger =  applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(loadingCounter,uiMessageManager)
-        updateCredentials(UpdateCredentials.Params(true)).collectStatus(loadingCounter,uiMessageManager)
-        getSettings().collect{result->
-            when(result){
-                is Resource.Success -> {
-                    result.data?.data?.let {
-                    configDao.insertConfig(
-                        Config(
-                            id=it.id,
-                            coordenada = it.coordenadas,
-                            interfaz = it.interfas,
-                            riopass = it.passwordRio,
-                            riouser = it.usuarioRio,
-                            zonaHoraria = it.ZonaHoraria,
-                            url_controladora = it.ipControlador,
-                            url_servidor = "http://172.20.10.55:91",
-                            localePass ="129192",
-                            zonaPoligono = "Zona Poligono",
-                            imei = telephoneManger.imei,
-                            ciudades = it.ciudades
-                        )
-                    )
-                    }
-                    Log.d("CONGIG_RESULT", "SUCCESS")
-                }
-                is Resource.Error ->{
-                    Toast.makeText(applicationContext,result.message,Toast.LENGTH_SHORT).show()
-                    Result.retry()
-                }
-                else -> {}
-            }
+//        val telephoneManger =  applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        return try{
+            updateCardHolders.executeSync(UpdateCardHolders.Params(true))
+            updateCredentials.executeSync(UpdateCredentials.Params(true))
+            Result.success()
+        }catch(e:Exception){
+            Result.failure()
         }
-        return Result.success()
+//        getSettings().collect{result->
+//            when(result){
+//                is Resource.Success -> {
+//                    result.data?.data?.let {
+//                    configDao.insertConfig(
+//                        Config(
+//                            id=it.id,
+//                            coordenada = it.coordenadas,
+//                            interfaz = it.interfas,
+//                            riopass = it.passwordRio,
+//                            riouser = it.usuarioRio,
+//                            zonaHoraria = it.ZonaHoraria,
+//                            url_controladora = it.ipControlador,
+//                            url_servidor = "http://172.20.10.55:91",
+//                            localePass ="129192",
+//                            zonaPoligono = "Zona Poligono",
+//                            imei = telephoneManger.imei,
+//                            ciudades = it.ciudades
+//                        )
+//                    )
+//                    }
+//                    Log.d("CONGIG_RESULT", "SUCCESS")
+//                }
+//                is Resource.Error ->{
+//                    Toast.makeText(applicationContext,result.message,Toast.LENGTH_SHORT).show()
+//                    Result.retry()
+//                }
+//                else -> {}
+//            }
+//        }
     }
 }

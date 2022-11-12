@@ -9,11 +9,17 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
-    <!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-    <!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+
+<!--    <uses-feature android:name="android.hardware.camera" />-->
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
@@ -24,15 +30,16 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/logo_launcher"
-        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.SplashScreenTheme"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <profileable
             android:shell="true"
             tools:targetApi="29" />
+
         <activity
             android:name="com.coppernic.mobility.MainActivity"
             android:exported="true"
@@ -45,22 +52,21 @@
             </intent-filter>
         </activity>
 
-<!--        <provider-->
-<!--            android:name="androidx.startup.InitializationProvider"-->
-<!--            android:authorities="${applicationId}.androidx-startup"-->
-<!--            android:exported="false"-->
-<!--            tools:node="merge">-->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <!--
+                 Disable the WorkManager default initializer since
+                 we are providing our own configuration.
+            -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
 
-<!--            &lt;!&ndash;-->
-<!--                 Disable the WorkManager default initializer since-->
-<!--                 we are providing our own configuration.-->
-<!--            &ndash;&gt;-->
-<!--            <meta-data-->
-<!--                android:name="androidx.work.WorkManagerInitializer"-->
-<!--                android:value="androidx.startup"-->
-<!--                tools:node="remove" />-->
-<!--        </provider>-->
-        <!-- <receiver android:name=".GeofenceBroadcastReceiver"/> -->
     </application>
 
 </manifest>

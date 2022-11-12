@@ -16,8 +16,9 @@ import com.coppernic.mobility.util.interfaces.TecluDatabaseDao
     Marcacion::class,
     Ciudad::class,
     ImageUser::class,
-    AccessEntity::class
-                     ],
+    AccessEntity::class,
+    UserFts4::class
+    ],
     version = 6
 )
 @TypeConverters(Converters::class)

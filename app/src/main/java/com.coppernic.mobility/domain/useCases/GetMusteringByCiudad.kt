@@ -18,7 +18,7 @@ class GetMusteringByCiudad @Inject constructor(
             Log.d("MUSTERING","new_request")
             emit(Resource.Loading())
             val response = apiService.getMusteringByCiudad(ciudadId)
-
+            Log.d("MUSTERING",response.data.toString())
             emit(Resource.Success(response))
         }catch(e: HttpException){
 //                Log.d("SETTING_REQUEST","Http ${e.localizedMessage}")

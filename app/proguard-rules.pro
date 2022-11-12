@@ -21,15 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 
--keep class com.coppernic.mobility.data.dto.*.* { *; }
-
-
--keep class io.ktor.** { *; }
-#-keep class io.github.hakky54.** { *; }
-#-keep class nl.altindag.ssl.** { *; }
-
-
-
 -verbose
 -allowaccessmodification
 -repackageclasses
@@ -49,6 +40,7 @@
 -keep public class androidx.compose.ui.platform.ComposeView {
     public <init>(android.content.Context, android.util.AttributeSet);
 }
+
 
 # For enumeration classes
 -keepclassmembers enum * {
@@ -80,52 +72,67 @@
 # Dagger
 -dontwarn com.google.errorprone.annotations.*
 
-# Keep trakt-java and tmdb-java entity names (for GSON)
+
+# Retain the generic signature of retrofit2.Call until added to Retrofit.
+# Issue: https://github.com/square/retrofit/issues/3580.
+# Pull request: https://github.com/square/retrofit/pull/3579.
+-keep,allowobfuscation,allowshrinking class retrofit2.Call
+
+## Keep trakt-java and tmdb-java entity names (for GSON)
+#
+#
+#
+#
+## Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
+## EnclosingMethod is required to use InnerClasses.
+#-keepattributes Signature, InnerClasses, EnclosingMethod
+#
+## Retrofit does reflection on method and parameter annotations.
+#-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+#
+## Keep annotation default values (e.g., retrofit2.http.Field.encoded).
+#-keepattributes AnnotationDefault
+#
+## Retain service method parameters when optimizing.
+#-keepclassmembers,allowshrinking,allowobfuscation interface * {
+#    @retrofit2.http.* <methods>;
+#}
+#
+## Ignore annotation used for build tooling.
+##-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+#
+## Ignore JSR 305 annotations for embedding nullability information.
+#-dontwarn javax.annotation.**
+#
+## Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
+#-dontwarn kotlin.Unit
+#
+## Top-level functions that can only be used by Kotlin.
+#-dontwarn retrofit2.KotlinExtensions
+#
+## With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
+## and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
+#-if interface * { @retrofit2.http.* <methods>; }
+#-keep,allowobfuscation interface <1>
+#
+## Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
+#-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+#-keep,allowobfuscation,allowshrinking class retrofit2.Response
+#
+## With R8 full mode generic signatures are stripped for classes that are not
+## kept. Suspend functions are wrapped in continuations where the type argument
+## is used.
+#-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+#
+## Retain annotation default values for all annotations.
+## Required until R8 version >= 3.1.12+ (in AGP 7.1.0+).
+#-keep,allowobfuscation,allowshrinking interface *
 
 
 
+-keep class com.coppernic.mobility.data.dto.*.* { *; }
 
-# Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
-# EnclosingMethod is required to use InnerClasses.
--keepattributes Signature, InnerClasses, EnclosingMethod
 
-# Retrofit does reflection on method and parameter annotations.
--keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+-keep class io.ktor.** { *; }
 
-# Keep annotation default values (e.g., retrofit2.http.Field.encoded).
--keepattributes AnnotationDefault
 
-# Retain service method parameters when optimizing.
--keepclassmembers,allowshrinking,allowobfuscation interface * {
-    @retrofit2.http.* <methods>;
-}
-
-# Ignore annotation used for build tooling.
-#-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
-# Ignore JSR 305 annotations for embedding nullability information.
--dontwarn javax.annotation.**
-
-# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
--dontwarn kotlin.Unit
-
-# Top-level functions that can only be used by Kotlin.
--dontwarn retrofit2.KotlinExtensions
-
-# With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
-# and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
--if interface * { @retrofit2.http.* <methods>; }
--keep,allowobfuscation interface <1>
-
-# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
--keep,allowobfuscation,allowshrinking interface retrofit2.Call
--keep,allowobfuscation,allowshrinking class retrofit2.Response
-
-# With R8 full mode generic signatures are stripped for classes that are not
-# kept. Suspend functions are wrapped in continuations where the type argument
-# is used.
--keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
-
-# Retain annotation default values for all annotations.
-# Required until R8 version >= 3.1.12+ (in AGP 7.1.0+).
--keep,allowobfuscation,allowshrinking interface *

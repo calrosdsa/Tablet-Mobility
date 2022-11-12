@@ -10,7 +10,6 @@ import org.threeten.bp.OffsetDateTime
 
 @Dao
 interface MarcacionDao {
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMarcacion(vararg Marcacion: Marcacion)
 

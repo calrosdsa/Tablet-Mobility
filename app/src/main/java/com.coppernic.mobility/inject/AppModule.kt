@@ -3,6 +3,7 @@ package com.coppernic.mobility.inject
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import coil.ImageLoader
 import com.coppernic.mobility.data.ApiService
 import com.coppernic.mobility.domain.extensions.withLocale
 import com.coppernic.mobility.util.AppCoroutineDispatchers
@@ -55,8 +56,11 @@ object AppModule {
         //.create(ApiService::class.java)
     }
 
-
-
+    @Provides
+    @Singleton
+    fun provideImageLoader(
+        @ApplicationContext context: Context
+    )= ImageLoader(context)
 
     @Singleton
     @Provides

@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.coppernic.mobility.data.models.dao.ImageDao
+import com.coppernic.mobility.data.models.dao.UserCardFtsDao
 import com.coppernic.mobility.data.result.CredentialCard
 import com.coppernic.mobility.domain.util.PagingInteractor
 import com.coppernic.mobility.domain.util.pagination.PaginationUsers
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class ObserverCardCredential @Inject constructor(
     private val imageDao: ImageDao,
+//    private val userCardFtsDao: UserCardFtsDao,
 //    private val credentialDao: CredentialDao
 ): PagingInteractor<ObserverCardCredential.Params, CredentialCard>() {
 
@@ -21,6 +23,7 @@ class ObserverCardCredential @Inject constructor(
             pagingSourceFactory = {
                 PaginationUsers(
                     params.query,
+//                    userCardFtsDao
                     imageDao,
                 )
             }

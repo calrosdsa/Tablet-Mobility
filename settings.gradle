@@ -13,3 +13,4 @@ dependencyResolutionManagement {
 rootProject.name = "Teclu Tablet Mobility"
 include ':app'
 //include ':benchmark'
+include ':benchmark'

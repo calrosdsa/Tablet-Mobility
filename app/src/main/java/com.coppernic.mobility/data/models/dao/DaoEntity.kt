@@ -5,7 +5,7 @@ import com.coppernic.mobility.data.models.entities.AppEntity
 
 
 abstract class DaoEntity<in E:AppEntity> {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(entity: E): Long
 
     @Insert

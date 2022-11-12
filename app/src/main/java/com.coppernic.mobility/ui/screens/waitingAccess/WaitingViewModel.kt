@@ -109,18 +109,16 @@ class WaitingViewModel @Inject constructor(
 
     private fun checkValidation(facilityCode: Int, cardNumber: Int) {
         try {
-
             viewModelScope.launch(Dispatchers.IO) {
                 val credential = credentialDao.getCredentialByNumber(facilityCode, cardNumber)
-                val cardHolder =
-                    credential?.guidCardHolder?.let { cardholderDao.getCardholderByGuid(it) }
+                val cardHolder = credential?.guidCardHolder?.let { cardholderDao.getCardholderByGuid(it) }
                 val imageUser = credential?.guidCardHolder?.let { imageDao.getUserImage(it) }
                 if (credential == null) {
                     uiMessageManager.emitMessage(UiMessage("Credencial No registrada "))
                 }
                 flow<Access> {
                     try {
-                        if (cardHolder?.estado == "Active") {
+                        if (credential != null) {
                             if (credential.estado == "Active") {
                                 emit(Access.Accepted("Acceso Permitido", "", Color(0xFF00C853)))
                             } else {
@@ -132,8 +130,6 @@ class WaitingViewModel @Inject constructor(
                                 }
                                 emit(Access.Denied("Acceso Denegado", detail, Color.Red))
                             }
-                        } else {
-                            emit(Access.Denied("Acceso Denegado", "Usuario Inactivo", Color.Red))
                         }
                     } catch (e: NullPointerException) {
                         emit(Access.Error("Acceso Denegado", "Error Desconocido", Color.DarkGray))
@@ -144,7 +140,7 @@ class WaitingViewModel @Inject constructor(
                             playSound(true)
                             this@WaitingViewModel.accessPerson.emit(
                                 AccessPerson(
-                                    personName = imageUser?.nombre,
+                                    personName = imageUser?.nombre?:"Visita",
                                     cardNumber = cardNumber,
                                     empresa = cardHolder?.empresa,
                                     ci = cardHolder?.ci,

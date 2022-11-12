@@ -17,7 +17,7 @@ data class AccessPerson(
     val cardNumber:Int? = null,
     val empresa:String? = null,
     val ci:String? = null,
-    val picture:Bitmap? = null,
+    val picture:String? = "",
     val stateBackGround: Color? = null,
     val accessState:String? = null,
     val accessDetail:String? = null,
