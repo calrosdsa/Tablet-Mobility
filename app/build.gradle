@@ -20,19 +20,19 @@ android {
         }
     }
     namespace 'com.coppernic.mobility'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId 'com.coppernic.mobility'
         minSdk 26
-        targetSdk 32
-        versionCode 5
-        versionName "1.4"
+        targetSdk 33
+        versionCode 9
+        versionName "1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
-                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                            "room.schemaLocation":"$projectDir/schemas".toString(),
                         "room.incremental":"true"]
                 //                  "room.expandProjection":"true"
             }
@@ -57,12 +57,12 @@ android {
     }
 
     compileOptions{
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         compose true

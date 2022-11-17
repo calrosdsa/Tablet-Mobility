@@ -39,6 +39,15 @@ fun ZoneScreen(
     val query = remember {
         mutableStateOf("")
     }
+
+    state.uiMessage?.let {message->
+        LaunchedEffect(key1 = message, block = {
+            scaffoldState.snackbarHostState.showSnackbar(message.message)
+            viewModel.clearMessage()
+        })
+    }
+
+
     Box(modifier = Modifier.fillMaxSize()) {
             Scaffold(
                 topBar = {
@@ -61,6 +70,7 @@ fun ZoneScreen(
                         trailingIcon = {
                             if (query.value.isNotBlank()) {
                                 IconButton(onClick = {
+                                    viewModel.clearQuery()
                                     query.value = ""
                                     focus.clearFocus()
                                 }) {
@@ -86,6 +96,7 @@ fun ZoneScreen(
                         ),
                     )
                 },
+                scaffoldState = scaffoldState,
                 modifier = Modifier.fillMaxSize()) { padding ->
                 Column(modifier = Modifier.padding(padding)) {
 //                    TopBarComponent(openMenu = {

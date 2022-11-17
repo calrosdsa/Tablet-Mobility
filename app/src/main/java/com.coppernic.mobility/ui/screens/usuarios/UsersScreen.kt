@@ -93,7 +93,10 @@ fun UsersScreem(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(top = 10.dp)
             ) {
-                items(items = pagingItems) { item ->
+                items(
+                    items = pagingItems,
+                    key = { it.credential?.id ?: 0 }
+                ) { item ->
                     CardCredentialItem(
                         item1 = item,
                         onClick = {

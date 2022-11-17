@@ -3,19 +3,20 @@ package com.coppernic.mobility.ui.screens.home
 import android.app.Activity
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -83,7 +84,7 @@ fun HomeScreen(
         }
     }
 
-    Column() {
+    Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
             openMenu = {
                 coroutine.launch {
@@ -124,6 +125,7 @@ fun HomeScreen(
                     contentDescription = "main_logo",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
+                        .testTag("logo")
                         .fillMaxWidth(0.80f)
                         .height(140.dp)
                 )
@@ -139,13 +141,24 @@ fun HomeScreen(
                                 launchSingleTop = true
                             }
                         }, modifier = Modifier
+                            .testTag("ingreso")
+//                            .clickable {
+//                                navController.navigate(MainDestination.WAITING_SCREEN + "?${Params.TYPE_ACCESS_PARAM}=R1") {
+//                                launchSingleTop = true
+//                            }
+//                            }
                             .height(60.dp)
                             .width(120.dp)
                     ) {
                         Text(
                             text = "Ingreso",
                             style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.background
+                            color = MaterialTheme.colors.background,
+//                            modifier = Modifier.clickable {
+//                                navController.navigate(MainDestination.WAITING_SCREEN + "?${Params.TYPE_ACCESS_PARAM}=R1") {
+//                                    launchSingleTop = true
+//                                }
+//                            }
                         )
                     }
                     Button(
@@ -154,6 +167,7 @@ fun HomeScreen(
                                 launchSingleTop = true
                             }
                         }, modifier = Modifier
+                            .testTag("salida")
                             .height(60.dp)
                             .width(120.dp)
                     ) {

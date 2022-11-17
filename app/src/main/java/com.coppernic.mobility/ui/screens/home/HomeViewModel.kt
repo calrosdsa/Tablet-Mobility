@@ -34,19 +34,19 @@ class HomeViewModel @Inject constructor(
     private val updateCardHolders: UpdateCardHolders,
     private val updateCredentials: UpdateCredentials,
     private val marcacionDao: MarcacionDao,
-    private val imageDao: ImageDao,
-    private val cardholderDao: CardholderDao,
+//    private val imageDao: ImageDao,
+//    private val cardholderDao: CardholderDao,
     private val getConnection: GetConnection,
-    private val credentialDao: CredentialDao,
+//    private val credentialDao: CredentialDao,
 //    private val appUtil: AppUtil,
     appPreferences: AppPreferences,
     private val appTasks: AppTasks,
-    @ApplicationContext private val context:Context
+//    @ApplicationContext private val context:Context
 ):ViewModel(){
     val tableName = appPreferences.tableNameStream
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
-    private val networkConnection = MutableStateFlow<NetworkStatus>(NetworkStatus.Unavailable)
+    private val networkConnection = MutableStateFlow(NetworkStatus.Unavailable)
     private val marcacionCount = MutableStateFlow(0)
 //    private val changedNetworkStatus = context.networkStatus
 ////        .dropWhile { it == NetworkStatus.Available } // ignore initial available status
@@ -82,12 +82,13 @@ class HomeViewModel @Inject constructor(
 //        connectToServer()
         viewModelScope.launch {
             do{
-                   Log.d("DEBUG_D","try again")
+//                   Log.d("DEBUG_D","try again")
               checkConnection()
                 delay(2000)
             }while(isActive)
         }
-//        Log.d("DEBUGG_DD", isPortInUse("http://10.0.1.181",12015).toString())
+//        appTasks.getDataServer()
+//        Log.d("DEBUGG_DD", isPorrtInUse("http://10.0.1.181",12015).toString())
 //        isPortInUse("http://10.0.1.181",12015)
     }
 
@@ -107,78 +108,78 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun insertToDb() {
-        viewModelScope.launch(Dispatchers.IO) {
-////            val credentials = ca
-////
-//            val imageCount = imageDao.getUserImages()
-//            Log.d("DEBUG_D",imageCount.size.toString())
-//            val credentials = credentialDao.getCredentialList()
-//            val cardHolders = cardholderDao.getCardholder2()
-            imageDao.insert(
-                ImageUser(
-                    userGui = "100aba66-4a9d-47fb-93b7-5a28eb06e365",
-                    nombre = "Juan  Soliz ",
-                    picture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                )
-            )
-            imageDao.insert(
-                ImageUser(
-                    userGui = "5",
-                    nombre = "Ernesto Villa",
-//                    picture = BitmapFactory.decodeResource(context.resources,R.drawable.profile)
-                    picture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                )
-            )
-            cardholderDao.insert(
-                Cardholder(
-                    guid = "100aba66-4a9d-47fb-93b7-5a28eb06e365",
-//            firstName = "Pedro Alberto",
-//            lastName = "Soliz Gallardo",
-                    ci = "89543216 SC",
-                    descriptions = "21k2 121sasas",
-                    empresa = "TECLU ",
-                    estado = "Inactive",
-                )
-            )
-            credentialDao.insert(
-                Credential(
-//                    id = 1000,
-                    guidCardHolder = "100aba66-4a9d-47fb-93b7-5a28eb06e365",
-                    guid = "cb8ca593-1ea1-4934-897d-15c1e197309b",
-                    cardNumber = 2937,
-                    facilityCode = 213,
-                    uniqueId = "00000000000000000000000003AA16F3|26",
-                    estado = "Inactive"
-                )
-            )
-            cardholderDao.insert(
-                Cardholder(
-                    guid = "5",
-//                firstName = "Juan Marcos",
-//                lastName = "Medina Fuentes",
-                    ci = "89543216 SC",
-                    descriptions = "21k2 121sasas",
-                    empresa = "TECLU ",
-                    estado = "Active",
-                )
-            )
-            credentialDao.insert(
-                Credential(
-//                    id = 1000,
-                    guidCardHolder = "5",
-                    guid = "ad8ca593-1ea1-4934-897d-15c1e197309b",
-                    cardNumber = 1437,
-                    facilityCode = 213,
-                    uniqueId = "00000000000000000000000003AA11F3|40",
-                    estado = "Active"
-                )
-            )
-//            Log.d("CARD_HOLDER_RESULTS", "cardHolderDb $cardHolders")
-//            Log.d("CREDENTIAL_RESULTS", "cardHolderDb $credentials")
+//    fun insertToDb() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//////            val credentials = ca
+//////
+////            val imageCount = imageDao.getUserImages()
+////            Log.d("DEBUG_D",imageCount.size.toString())
+////            val credentials = credentialDao.getCredentialList()
+////            val cardHolders = cardholderDao.getCardholder2()
+//            imageDao.insert(
+//                ImageUser(
+//                    userGui = "100aba66-4a9d-47fb-93b7-5a28eb06e365",
+//                    nombre = "Juan  Soliz ",
+//                    picture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+//                )
+//            )
+//            imageDao.insert(
+//                ImageUser(
+//                    userGui = "5",
+//                    nombre = "Ernesto Villa",
+////                    picture = BitmapFactory.decodeResource(context.resources,R.drawable.profile)
+//                    picture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+//                )
+//            )
+//            cardholderDao.insert(
+//                Cardholder(
+//                    guid = "100aba66-4a9d-47fb-93b7-5a28eb06e365",
+////            firstName = "Pedro Alberto",
+////            lastName = "Soliz Gallardo",
+//                    ci = "89543216 SC",
+//                    descriptions = "21k2 121sasas",
+//                    empresa = "TECLU ",
+//                    estado = "Inactive",
+//                )
+//            )
+//            credentialDao.insert(
+//                Credential(
+////                    id = 1000,
+//                    guidCardHolder = "100aba66-4a9d-47fb-93b7-5a28eb06e365",
+//                    guid = "cb8ca593-1ea1-4934-897d-15c1e197309b",
+//                    cardNumber = 2937,
+//                    facilityCode = 213,
+//                    uniqueId = "00000000000000000000000003AA16F3|26",
+//                    estado = "Inactive"
+//                )
+//            )
+//            cardholderDao.insert(
+//                Cardholder(
+//                    guid = "5",
+////                firstName = "Juan Marcos",
+////                lastName = "Medina Fuentes",
+//                    ci = "89543216 SC",
+//                    descriptions = "21k2 121sasas",
+//                    empresa = "TECLU ",
+//                    estado = "Active",
+//                )
+//            )
+//            credentialDao.insert(
+//                Credential(
+////                    id = 1000,
+//                    guidCardHolder = "5",
+//                    guid = "ad8ca593-1ea1-4934-897d-15c1e197309b",
+//                    cardNumber = 1437,
+//                    facilityCode = 213,
+//                    uniqueId = "00000000000000000000000003AA11F3|40",
+//                    estado = "Active"
+//                )
+//            )
+////            Log.d("CARD_HOLDER_RESULTS", "cardHolderDb $cardHolders")
+////            Log.d("CREDENTIAL_RESULTS", "cardHolderDb $credentials")
+////        }
 //        }
-        }
-    }
+//    }
 
 
     fun getMarcarcaionCount(){
@@ -194,9 +195,26 @@ class HomeViewModel @Inject constructor(
 //    @SuppressLint("NewApi")
     fun updateCardHolders(){
         viewModelScope.launch {
-            updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(loadingCounter,uiMessageManager)
-            updateCredentials(UpdateCredentials.Params(true)).collectStatus(loadingCounter,uiMessageManager)
-            appTasks.sendMarcaciones()
+            supervisorScope {
+            val cardHolders = async {
+                updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(
+                    loadingCounter,
+                    uiMessageManager
+                )
+            }
+            val credentials = async {
+                updateCredentials(UpdateCredentials.Params(true)).collectStatus(
+                    loadingCounter,
+                    uiMessageManager
+                )
+            }
+            val sendMarcaciones = async {
+                appTasks.sendMarcaciones()
+            }
+                sendMarcaciones.await()
+                cardHolders.await()
+                credentials.await()
+            }
         }
     }
 

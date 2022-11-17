@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 @HiltViewModel
-class ManualMarkerViewModel @Inject constructor(
+class   ManualMarkerViewModel @Inject constructor(
     observerCardCredential: ObserverCardCredential,
 //    observerCardHolders: ObserverCardHolders,
     savedStateHandle: SavedStateHandle,

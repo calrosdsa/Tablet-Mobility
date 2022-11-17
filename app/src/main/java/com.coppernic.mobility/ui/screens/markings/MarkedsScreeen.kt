@@ -88,13 +88,10 @@ fun MarkedsScreen(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
             dateValue = "${mDayOfMonth}/${mMonth + 1}/$mYear"
-//            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
             val date = LocalDateTime.of(mYear, mMonth + 1, mDayOfMonth, 0, 0, 0)
             val zoneOffSet: ZoneOffset = zone.rules.getOffset(date)
             val time = date.atOffset(zoneOffSet)
-//            viewModel.setSortedOptionDay(dayOptions.NO_OPTION)
             viewModel.setDateSelect(time)
-//            Log.d("DATE_PICKER",time.toString())
         }, mYear, mMonth, mDay
     )
 
@@ -131,6 +128,7 @@ fun MarkedsScreen(
         }, sheetState = sheetState,
         sheetBackgroundColor = MaterialTheme.colors.surface,
         scrimColor = Color.Black.copy(alpha = 0.3f),
+        modifier = Modifier.fillMaxSize(),
         sheetShape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
     ) {
         Scaffold(
@@ -156,7 +154,6 @@ fun MarkedsScreen(
             },
             modifier = Modifier.fillMaxSize()
         ) { padding ->
-            Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -171,7 +168,10 @@ fun MarkedsScreen(
                         }
                     )
                     LazyColumn(state = lazyState, modifier = Modifier.fillMaxSize()) {
-                        items(items = pagingItems) { item ->
+                        items(
+                            items = pagingItems,
+                            key = {it.marcacion?.id?: 0 }
+                        ) { item ->
                             MarcacionItem(
                                 item = item,
                                 onClick = {
@@ -226,7 +226,6 @@ fun MarkedsScreen(
 //                        }
 //                    }
 //                }
-                }
         }
     }
 }
@@ -338,6 +337,7 @@ fun MarcacionItem(
                             imageVector = Icons.Default.Update, contentDescription = marcacion.cardCode,
                             modifier = Modifier.size(17.dp)
                         )
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(
                             text = formatter.formatMediumDateTime(marcacion.date),
                             style = MaterialTheme.typography.body2

@@ -45,7 +45,8 @@ interface MarcacionDao {
     @Query("DELETE  FROM marcacion WHERE fecha = :fecha")
     suspend fun deleteMarcacion (fecha:Long)
 
-    @Query("SELECT * FROM marcacion WHERE guidUser =:guid LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM marcacion WHERE guidUser =:guid ORDER BY fecha DESC LIMIT :limit OFFSET :offset")
+//    @Query("SELECT * FROM marcacion WHERE guidUser =:guid LIMIT :limit OFFSET :offset")
     fun getMarcacionesByPerson(guid:String,limit:Int,offset:Int):List<Marcacion>
 
 //    @Query("""

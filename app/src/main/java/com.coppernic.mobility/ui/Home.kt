@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -17,7 +20,7 @@ import com.coppernic.mobility.util.constants.MainDestination
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Home(
     initialRoute:String
@@ -30,7 +33,13 @@ fun Home(
         drawerContent = {
             DrawerContentScreen(navController = navController, scaffoldState =state)
         },
-        drawerGesturesEnabled = false
+        drawerGesturesEnabled = false,
+        modifier = Modifier.semantics {
+            // Allows to use testTag() for UiAutomator's resource-id.
+            // It can be enabled high in the compose hierarchy,
+            // so that it's enabled for the whole subtree
+            testTagsAsResourceId = true
+        }
     ) {
         // A surface container using the 'background' color from the theme
         Surface(

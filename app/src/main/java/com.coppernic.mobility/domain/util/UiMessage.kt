@@ -43,3 +43,25 @@ class UiMessageManager {
         }
     }
 }
+class UiMessageManager2 {
+    private val mutex = Mutex()
+
+    private val _messages = MutableStateFlow<UiMessage?>(null)
+
+    /**
+     * A flow emitting the current message to display.
+     */
+    val message: Flow<UiMessage?> = _messages
+
+    suspend fun emitMessage(message: UiMessage) {
+        mutex.withLock {
+            _messages.value =  message
+        }
+    }
+
+    suspend fun clearMessage() {
+        mutex.withLock {
+            _messages.value = null
+        }
+    }
+}

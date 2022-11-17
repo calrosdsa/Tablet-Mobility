@@ -147,6 +147,17 @@ fun SettingScreen(
                     )
                     Divider(modifier = Modifier.padding(vertical = 8.dp))
 
+                    Text(
+                        text = "Interfaz",
+                        color = MaterialTheme.colors.secondaryVariant.copy(alpha = 0.7f),
+                        style = MaterialTheme.typography.subtitle1
+                    )
+                    Text(
+                        text = it.interfaz.toString(),
+                        color = MaterialTheme.colors.secondaryVariant.copy(alpha = 0.7f)
+                    )
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+
 //                Spacer(modifier = Modifier.height(15.dp))
                 }
                     Text(

@@ -3,6 +3,7 @@ package com.coppernic.mobility.ui.screens.manual_marker
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -110,7 +112,10 @@ fun ManualMarkerScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(top = 10.dp)
             ) {
-                items(items = pagingItems) { item ->
+                items(
+                    items = pagingItems,
+                    key = { it.credential?.id ?: 0 }
+                ) { item ->
                     CardCredentialItem(
                         item1 = item,
                         onClick = {
@@ -168,7 +173,8 @@ fun CardCredentialItem(
             model = item1?.cardImage?.picture,
             description = item?.guid,
             modifier = Modifier
-                .size(90.dp,90.dp),
+                .size(90.dp,90.dp)
+            ,
             requestBuilder = { crossfade(true) },
             )
 //        }

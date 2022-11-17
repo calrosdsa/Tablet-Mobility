@@ -21,10 +21,11 @@ class GetEstadoPerson @Inject constructor(
         try {
             emit(Resource.Loading())
             val response = apiService.getEstadoPerson(idEstado, idCiudad)
+//            Log.d("RESPONSE_D",response.toString())
             if(query.isBlank()){
             emit(Resource.Success(response.data))
             }else{
-                Log.d("DEBUG_D",query)
+//                Log.d("DEBUG_D",query)
             val filterData = response.data.filter { it.nombre.lowercase().contains(query.lowercase()) }
                 emit(Resource.Success(filterData))
 

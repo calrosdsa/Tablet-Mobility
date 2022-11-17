@@ -19,7 +19,7 @@ import com.coppernic.mobility.util.interfaces.TecluDatabaseDao
     AccessEntity::class,
     UserFts4::class
     ],
-    version = 6
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(), TecluDatabaseDao {

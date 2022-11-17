@@ -33,7 +33,7 @@ class DetailPersonViewModel @Inject constructor(
         pagingSourceFactory = {
             PaginationUserMarcaciones(
                 marcacionDao = marcacionDao,
-                guid = guid?:"N/a"
+                guid = guid?:"N/A"
             )
         }
     ).flow.cachedIn(viewModelScope)

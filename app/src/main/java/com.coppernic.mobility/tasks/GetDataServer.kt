@@ -20,14 +20,16 @@ import com.coppernic.mobility.domain.util.collectStatus
 import com.coppernic.mobility.util.Resource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 
 @HiltWorker
 class GetDataServer @AssistedInject constructor(
     @Assisted context:Context,
     @Assisted params: WorkerParameters,
-    private val getSettings: GetSettings,
-    private val configDao:ConfigDao,
+//    private val getSettings: GetSettings,
+//    private val configDao:ConfigDao,
     private val updateCredentials: UpdateCredentials,
     private val updateCardHolders: UpdateCardHolders,
 ) :CoroutineWorker(context,params) {
@@ -40,8 +42,16 @@ class GetDataServer @AssistedInject constructor(
     override suspend fun doWork(): Result {
 //        val telephoneManger =  applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return try{
-            updateCardHolders.executeSync(UpdateCardHolders.Params(true))
-            updateCredentials.executeSync(UpdateCredentials.Params(true))
+            runBlocking {
+            val cardHolders = async {
+                updateCardHolders.executeSync(UpdateCardHolders.Params(true))
+            }
+            val credentials = async {
+                updateCredentials.executeSync(UpdateCredentials.Params(true))
+            }
+            cardHolders.await()
+            credentials.await()
+            }
             Result.success()
         }catch(e:Exception){
             Result.failure()

@@ -56,7 +56,7 @@ class PaginationMarkers(
             )
             }
         } catch (e: Exception) {
-            Log.d("MARCACIONES",e.localizedMessage?:"UNEXXPECTED")
+//            Log.d("MARCACIONES",e.localizedMessage?:"UNEXXPECTED")
             LoadResult.Error(e)
         }
     }

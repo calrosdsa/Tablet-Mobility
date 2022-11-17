@@ -23,7 +23,7 @@ class MarkingViewModel @Inject constructor(
     private val tipoDeMarcacion = MutableStateFlow(TipoDeMarcacion.ALL)
     private val marcacionEstado = MutableStateFlow(MarcacionEstado.All)
     private val dateSelect = MutableStateFlow<OffsetDateTime?>(null)
-    val pagingState  = pagingInteractor.flow.debounce(50).cachedIn(viewModelScope)
+    val pagingState  = pagingInteractor.flow.debounce(200).cachedIn(viewModelScope)
 
     val state1 :StateFlow<MarkedState> = combine(
         sortedOption,
@@ -97,9 +97,9 @@ class MarkingViewModel @Inject constructor(
 
     companion object {
         val PAGING_CONFIG = PagingConfig(
-            pageSize = 30,
+            pageSize = 10,
             enablePlaceholders = false,
-            initialLoadSize = 20
+            initialLoadSize = 10
         )
     }
 }

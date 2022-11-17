@@ -42,7 +42,7 @@ fun MusteringScreen(
     state.uiMessage?.let { message ->
         LaunchedEffect(key1 = message, block = {
             scaffoldState.snackbarHostState.showSnackbar(message.message)
-            viewModel.clearMessage(message.id)
+            viewModel.clearMessage()
         })
     }
 

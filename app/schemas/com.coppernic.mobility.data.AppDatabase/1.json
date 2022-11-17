@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 6,
-    "identityHash": "8e54e9b7851ff1b2a63361d4b4f9ab97",
+    "version": 1,
+    "identityHash": "802c2cece26386f68ae7d0815d518410",
     "entities": [
       {
         "tableName": "config",
@@ -92,7 +92,7 @@
       },
       {
         "tableName": "cardholder",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `ci` TEXT, `descriptions` TEXT, `empresa` TEXT, `estado` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guid` TEXT NOT NULL, `ci` TEXT NOT NULL, `descriptions` TEXT, `empresa` TEXT, `estado` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -110,7 +110,7 @@
             "fieldPath": "ci",
             "columnName": "ci",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "descriptions",
@@ -292,7 +292,7 @@
       },
       {
         "tableName": "image_user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userGui` TEXT NOT NULL, `picture` BLOB, `nombre` TEXT, PRIMARY KEY(`userGui`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userGui` TEXT NOT NULL, `picture` TEXT NOT NULL, `nombre` TEXT NOT NULL, PRIMARY KEY(`userGui`))",
         "fields": [
           {
             "fieldPath": "userGui",
@@ -303,14 +303,14 @@
           {
             "fieldPath": "picture",
             "columnName": "picture",
-            "affinity": "BLOB",
-            "notNull": false
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "nombre",
             "columnName": "nombre",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -321,12 +321,79 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "access_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `access_settings` TEXT NOT NULL, `access_inicio` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accessSettings",
+            "columnName": "access_settings",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accessInicio",
+            "columnName": "access_inicio",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "credential",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_BEFORE_UPDATE BEFORE UPDATE ON `credential` BEGIN DELETE FROM `user_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_BEFORE_DELETE BEFORE DELETE ON `credential` BEGIN DELETE FROM `user_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_AFTER_UPDATE AFTER UPDATE ON `credential` BEGIN INSERT INTO `user_fts`(`docid`, `guidCardHolder`) VALUES (NEW.`rowid`, NEW.`guidCardHolder`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_AFTER_INSERT AFTER INSERT ON `credential` BEGIN INSERT INTO `user_fts`(`docid`, `guidCardHolder`) VALUES (NEW.`rowid`, NEW.`guidCardHolder`); END"
+        ],
+        "tableName": "user_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`guidCardHolder` TEXT, content=`credential`)",
+        "fields": [
+          {
+            "fieldPath": "guidCardHolder",
+            "columnName": "guidCardHolder",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8e54e9b7851ff1b2a63361d4b4f9ab97')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '802c2cece26386f68ae7d0815d518410')"
     ]
   }
 }

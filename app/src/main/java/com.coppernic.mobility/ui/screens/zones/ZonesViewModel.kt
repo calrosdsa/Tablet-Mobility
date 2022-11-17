@@ -6,28 +6,27 @@ import androidx.lifecycle.viewModelScope
 import com.coppernic.mobility.data.dto.mustering.DataX
 import com.coppernic.mobility.data.dto.mustering.MusteringByZonaDto
 import com.coppernic.mobility.domain.useCases.GetMusteringByZone
-import com.coppernic.mobility.domain.util.ObservableLoadingCounter
-import com.coppernic.mobility.domain.util.UiMessage
-import com.coppernic.mobility.domain.util.UiMessageManager
-import com.coppernic.mobility.domain.util.collectData
+import com.coppernic.mobility.domain.util.*
 import com.coppernic.mobility.util.Resource
 import com.coppernic.mobility.util.constants.Params
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class ZonesViewModel @Inject constructor(
     private val getMusteringByZone: GetMusteringByZone,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(){
-    val zoneParam = savedStateHandle.get<String>(Params.ZONE_PARAM)
-    val ciudadParam = savedStateHandle.get<String>(Params.CIUDAD_PARAM)
+    private val zoneParam = savedStateHandle.get<String>(Params.ZONE_PARAM)
+    private val ciudadParam = savedStateHandle.get<String>(Params.CIUDAD_PARAM)
     private val loadingCounter = ObservableLoadingCounter()
-    private val uiMessageManager = UiMessageManager()
+    private val uiMessageManager = UiMessageManager2()
     private val query = MutableStateFlow("")
     private val musteringByZona = MutableStateFlow<List<DataX>>(emptyList())
     val state :StateFlow<ZoneState> = combine(
@@ -51,11 +50,23 @@ class ZonesViewModel @Inject constructor(
             viewModelScope.launch {
              do{
             getMusteringByZoneFoo(zoneParam.toInt(),ciudadParam.toInt(),query.value)
-                 delay(3000)
+                 delay(2000)
              }while(isActive)
             }
         }
 
+        viewModelScope.launch {
+            query.debounce(300).collect{
+                updateData(it)
+            }
+        }
+    }
+
+    private fun  updateData(query:String){
+        viewModelScope.launch {
+            val results = musteringByZona.value.filter { it.nombre.lowercase().contains(query.lowercase()) }
+            this@ZonesViewModel.musteringByZona.emit(results)
+        }
     }
 
     fun search(query:String){
@@ -64,7 +75,7 @@ class ZonesViewModel @Inject constructor(
         }
     }
 
-    fun getMusteringByZoneFoo(zoneId:Int, ciudadId:Int,query: String){
+    private fun getMusteringByZoneFoo(zoneId:Int, ciudadId:Int,query: String){
         viewModelScope.launch {
 //            getMusteringByZone(zoneId,ciudadId).collectData(loadingCounter,uiMessageManager,musteringByZona)
             getMusteringByZone(zoneId,ciudadId,query).collect{result->
@@ -79,6 +90,17 @@ class ZonesViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+    fun clearQuery(){
+        viewModelScope.launch {
+            this@ZonesViewModel.query.emit("")
+        }
+    }
+
+    fun clearMessage(){
+        viewModelScope.launch {
+            uiMessageManager.clearMessage()
         }
     }
 }

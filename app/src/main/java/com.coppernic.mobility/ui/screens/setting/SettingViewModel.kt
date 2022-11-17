@@ -120,6 +120,8 @@ class SettingViewModel @Inject constructor(
                         appPreferences.tableName = it.nombreTablet
                         appPreferences.password = it.passwordSettingsApp
                     }
+                    uiMessageManager.emitMessage(UiMessage(message = "Datos Sincronizados"))
+
                 }
                 is Resource.Error ->{
                     uiMessageManager.emitMessage(
@@ -140,7 +142,7 @@ class SettingViewModel @Inject constructor(
                 val settings = async { getSettingsDevice() }
                 getAccess.await()
                 settings.await()
-                uiMessageManager.emitMessage(UiMessage(message = "Datos Sincronizados"))
+//                uiMessageManager.emitMessage(UiMessage(message = "Datos Sincronizados"))
                 loadingCounter.removeLoader()
             }
         }

@@ -4,22 +4,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
@@ -41,11 +46,20 @@ fun EstadoPerson(
     val focus = LocalFocusManager.current
 //    val context = LocalContext.current
 //    val defaultImage = BitmapFactory.decodeResource(context.resources, R.drawable.profile)
+    state.uiMessage?.let {message->
+        LaunchedEffect(key1 = message, block = {
+            scaffoldState.snackbarHostState.showSnackbar(message.message)
+            viewModel.clearMessage()
+        })
+    }
 
     val query = remember {
         mutableStateOf("")
     }
-    Scaffold(modifier=Modifier.fillMaxSize()) {padding1->
+    Scaffold(
+        modifier=Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState
+    ) {padding1->
         
     Box(modifier = Modifier
         .fillMaxSize()
@@ -70,6 +84,7 @@ fun EstadoPerson(
                     trailingIcon = {
                         if (query.value.isNotBlank()) {
                             IconButton(onClick = {
+                                viewModel.claerQuery()
                                 query.value = ""
                                 focus.clearFocus()
                             }) {
@@ -155,7 +170,7 @@ fun ZoneItemMarcacion(
 ) {
     val formatter = LocalAppDateFormatter.current
     Row(modifier = Modifier.padding(horizontal = 5.dp),
-    verticalAlignment = Alignment.CenterVertically) {
+    verticalAlignment = Alignment.Top) {
         if(item.picture.isBlank()){
             Image(
                 painter = painterResource(id = R.drawable.profile),
@@ -172,13 +187,34 @@ fun ZoneItemMarcacion(
                 contentDescription = item.nombre, modifier = Modifier
                     .size(95.dp)
                     .padding(5.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+//                    .clip(MaterialTheme.shapes.small)
             )
         }
-        Column() {
-            Text(text = "Nombre ${item.nombre}")
+        Column(modifier = Modifier.padding(top = 5.dp)) {
+            Text(text = item.nombre, maxLines = 1,style = MaterialTheme.typography.subtitle1.copy(
+                fontWeight = FontWeight.Medium
+            ))
 //            VerticalGrid {
-            Text(text = "Empresa: ${item.empresa}")
-            Text(text = "Fecha: ${item.fecha}", maxLines = 1)
+            Text(text = item.unidadOrganizativa, maxLines = 1,style = MaterialTheme.typography.body2.copy(
+                fontSize = 13.sp
+            ))
+            Text(text = "Lector: ${item.lector}", maxLines = 1,style = MaterialTheme.typography.body2.copy(
+                fontSize = 13.sp
+            ))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Update, contentDescription = item.fecha,
+                    modifier = Modifier.size(17.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = item.fecha,
+                    style = MaterialTheme.typography.body2.copy(
+                        fontSize = 13.sp
+                    )
+                )
+            }
 //            }
 //            Text(text = "Zona: ${item.zona}")
 //            Text(text = "Unidad Organizativa: ${item.unidadOrganizativa}")

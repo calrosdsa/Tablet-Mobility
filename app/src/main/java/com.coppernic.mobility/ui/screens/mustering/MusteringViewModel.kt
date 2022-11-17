@@ -8,6 +8,7 @@ import com.coppernic.mobility.domain.useCases.GetMusteringByCiudad
 import com.coppernic.mobility.domain.util.ObservableLoadingCounter
 import com.coppernic.mobility.domain.util.UiMessage
 import com.coppernic.mobility.domain.util.UiMessageManager
+import com.coppernic.mobility.domain.util.UiMessageManager2
 import com.coppernic.mobility.util.Resource
 import com.coppernic.mobility.util.constants.Params
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,7 @@ class MusteringViewModel @Inject constructor(
     private val dataResult = MutableStateFlow<DataResultFloat?>(null)
     private val musteringByZone = MutableStateFlow<MusteringByCiudadDto?>(null)
     private val loadingCounter = ObservableLoadingCounter()
-    private val uiMessageManager = UiMessageManager()
+    private val uiMessageManager = UiMessageManager2()
     val ciudadId = savedStateHandle.get<String>(Params.CIUDAD_PARAM)
     val state:StateFlow<MusteringState> = combine(
         dataResult,
@@ -56,7 +57,7 @@ class MusteringViewModel @Inject constructor(
         }
     }
 
-    fun getMusteringByCiudadFoo(ciudadId:Int){
+    private fun getMusteringByCiudadFoo(ciudadId:Int){
         viewModelScope.launch {
         getMusteringByCiudad(ciudadId).collect{result->
             when(result){
@@ -92,9 +93,9 @@ class MusteringViewModel @Inject constructor(
         }
     }
 
-    fun clearMessage(id:Long){
+    fun clearMessage(){
         viewModelScope.launch {
-        uiMessageManager.clearMessage(id)
+        uiMessageManager.clearMessage()
         }
     }
 }

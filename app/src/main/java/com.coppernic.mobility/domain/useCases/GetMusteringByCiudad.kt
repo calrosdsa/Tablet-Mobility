@@ -15,17 +15,17 @@ class GetMusteringByCiudad @Inject constructor(
 ) {
     operator fun invoke(ciudadId:Int) : Flow<Resource<MusteringByCiudadDto>> = flow {
         try {
-            Log.d("MUSTERING","new_request")
+//            Log.d("MUSTERING","new_request")
             emit(Resource.Loading())
             val response = apiService.getMusteringByCiudad(ciudadId)
-            Log.d("MUSTERING",response.data.toString())
+//            Log.d("MUSTERING",response.data.toString())
             emit(Resource.Success(response))
         }catch(e: HttpException){
 //                Log.d("SETTING_REQUEST","Http ${e.localizedMessage}")
-            Log.d("Mustering", e.localizedMessage?:"Error Http")
+//            Log.d("Mustering", e.localizedMessage?:"Error Http")
             emit(Resource.Error(e.localizedMessage?:"Http errror"))
         }catch(e: IOException){
-            Log.d("Mustering", e.localizedMessage?:"ErrorException")
+//            Log.d("Mustering", e.localizedMessage?:"ErrorException")
 //                Log.d("SETTING_REQUEST","Io ${e.localizedMessage}")
             emit(Resource.Error(e.localizedMessage?: "IoException"))
         }

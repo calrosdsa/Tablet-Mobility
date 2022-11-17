@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -86,6 +87,7 @@ fun WaitingScreen(
         TextField(value = valueText.value, onValueChange = {
             valueText.value = it
         }, modifier = Modifier
+            .testTag("input")
             .focusRequester(focusRequester)
             .alpha(0f)
             .size(0.dp)
@@ -146,7 +148,7 @@ fun WaitingScreen(
                                 )
                                 if (it.picture == null) {
                                     Image(
-                                        painter = painterResource(id = R.drawable.profile_image),
+                                        painter = painterResource(id = R.drawable.profile),
                                         contentDescription = "AccessProfile",
                                         modifier = Modifier
                                             .size(250.dp)

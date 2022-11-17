@@ -8,14 +8,10 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-<!--    <uses-feature android:name="android.hardware.camera" />-->
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- <uses-feature android:name="android.hardware.camera" /> -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
 
     <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
@@ -47,7 +43,6 @@
             android:theme="@style/Theme.App.SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,6 +52,7 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
+
             <!--
                  Disable the WorkManager default initializer since
                  we are providing our own configuration.
@@ -66,7 +62,6 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
-
     </application>
 
 </manifest>

@@ -76,7 +76,6 @@ abstract class SubjectInteractor<P : Any, T> {
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val flow: Flow<T> = paramState
         .distinctUntilChanged()
-//        .debounce(300)
         .flatMapLatest { createObservable(it) }
         .distinctUntilChanged()
 

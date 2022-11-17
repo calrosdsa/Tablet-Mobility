@@ -30,9 +30,9 @@ class AppTasksImpl @Inject constructor(
             .enqueue()
     }
     override fun getDataServer() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .build()
+//        val constraints = Constraints.Builder()
+//            .setRequiredNetworkType(NetworkType.UNMETERED)
+//            .build()
         val request = OneTimeWorkRequestBuilder<SendMarcacionesWorker>()
             .addTag(SendMarcacionesWorker.TAG)
             .build()
@@ -46,8 +46,8 @@ class AppTasksImpl @Inject constructor(
 //            .setConstraints(constraints)
 //            .build()
 //
-        workManager.beginWith(request)
-            .then(request2)
+        workManager.beginWith(request2)
+            .then(request)
 //            .then(request3)
             .enqueue()
 //        workManager.enqueue(request)

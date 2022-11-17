@@ -16,7 +16,7 @@ class CoppernicApplication:Application(), Configuration.Provider{
 
     override fun onCreate() {
         super.onCreate()
-        initializers.init(this)
+        initializers.init()
         AndroidThreeTen.init(this)
     }
 

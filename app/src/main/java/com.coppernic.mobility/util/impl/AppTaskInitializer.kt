@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 class TaskAppTasksInitializer @Inject constructor(
     private val appTasks: Lazy<AppTasks>
 ) :TaskAppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
 //        appTasks.get().sendMarcaciones()
         appTasks.get().getDataServer()
     }

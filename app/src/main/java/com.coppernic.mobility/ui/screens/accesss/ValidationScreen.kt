@@ -112,7 +112,7 @@ fun ValidationScreen(
                 LottieAnimation(
                     composition = composition,
                     progress = { progress },
-                    modifier = Modifier.testTag("logo_animation")
+//                    modifier = Modifier.testTag("logo_animation")
                 )
                 Text(
                     text = "Ingrese el código o escaneé su tarjeta para continuar",

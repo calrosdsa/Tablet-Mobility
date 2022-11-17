@@ -60,6 +60,11 @@ class MainActivity : ComponentActivity() {
 //        appTasks.sendMarcaciones()
     }
 
+    override fun onStop() {
+        super.onStop()
+        appTasks.getDataServer()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         appTasks.mainTask()
