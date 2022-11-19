@@ -51,15 +51,6 @@ class   ManualMarkerViewModel @Inject constructor(
                 ))
             }
 
-//                query.debounce(300)
-//                .onEach {query->
-//                    val job = launch {
-//                        observerCardCredential(ObserverCardCredential.Params(query))
-//                    }
-//                    job.join()
-//                }.catch {
-//
-//                }.collect()
         }
     }
 
@@ -88,6 +79,12 @@ class   ManualMarkerViewModel @Inject constructor(
         viewModelScope.launch {
 //            Log.d("SEARCH_STATE", searchTerm)
             this@ManualMarkerViewModel.query.emit(searchTerm)
+        }
+    }
+
+    fun clearQuery(){
+        viewModelScope.launch {
+            this@ManualMarkerViewModel.query.emit("")
         }
     }
 

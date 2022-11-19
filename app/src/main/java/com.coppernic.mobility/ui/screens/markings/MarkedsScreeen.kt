@@ -63,7 +63,7 @@ fun MarkedsScreen(
         mutableStateOf("")
     }
     val mContext = LocalContext.current
-    val defaultImage = BitmapFactory.decodeResource(mContext.resources, R.drawable.profile)
+//    val defaultImage = BitmapFactory.decodeResource(mContext.resources, R.drawable.profile)
 
 
     val mYear: Int
@@ -179,7 +179,7 @@ fun MarkedsScreen(
                                         launchSingleTop = true
                                     }
                                 },
-                                defaultImage = defaultImage
+//                                defaultImage = defaultImage
                             )
                             Divider()
                         }
@@ -233,7 +233,7 @@ fun MarkedsScreen(
 fun MarcacionItem(
     item: MarcacionWithImage?,
     onClick:()->Unit,
-    defaultImage:Bitmap,
+//    defaultImage:Bitmap,
 ) {
     val formatter = LocalAppDateFormatter.current
 //    val date = formatter.
@@ -264,7 +264,7 @@ fun MarcacionItem(
 //                )
             if(item.cardImageUser == null){
                 Image(
-                    bitmap = defaultImage.asImageBitmap(),
+                    painter = painterResource(id =R.drawable.profile),
                     contentDescription = item.marcacion!!.cardCode,
                     modifier = Modifier
                         .size(90.dp, 90.dp)

@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appTasks.getDataServer()
+//        appTasks.getDataServer()
         installSplashScreen()
         setContent {
             val initialRoute = appPreferences.initialScreen

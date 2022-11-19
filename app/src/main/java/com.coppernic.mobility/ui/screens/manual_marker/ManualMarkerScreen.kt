@@ -84,6 +84,7 @@ fun ManualMarkerScreen(
                 trailingIcon = {
                     if (query.value.isNotBlank()) {
                         IconButton(onClick = {
+                            viewModel.clearQuery()
                             query.value = ""
                             focus.clearFocus()
                         }) {

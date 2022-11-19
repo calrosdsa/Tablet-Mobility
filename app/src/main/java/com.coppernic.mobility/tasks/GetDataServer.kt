@@ -52,6 +52,8 @@ class GetDataServer @AssistedInject constructor(
             cardHolders.await()
             credentials.await()
             }
+//                    updateCardHolders.executeSync(UpdateCardHolders.Params(true))
+//                    updateCredentials.executeSync(UpdateCredentials.Params(true))
             Result.success()
         }catch(e:Exception){
             Result.failure()

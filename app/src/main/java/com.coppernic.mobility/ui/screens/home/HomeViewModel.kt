@@ -23,7 +23,10 @@ import com.coppernic.mobility.util.interfaces.AppPreferences
 import com.coppernic.mobility.util.interfaces.AppTasks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.ktor.utils.io.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.channels.broadcast
 import kotlinx.coroutines.flow.*
 import java.net.Socket
 import javax.inject.Inject
@@ -48,9 +51,6 @@ class HomeViewModel @Inject constructor(
     private val uiMessageManager = UiMessageManager()
     private val networkConnection = MutableStateFlow(NetworkStatus.Unavailable)
     private val marcacionCount = MutableStateFlow(0)
-//    private val changedNetworkStatus = context.networkStatus
-////        .dropWhile { it == NetworkStatus.Available } // ignore initial available status
-//        .shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val state:StateFlow<HomeState> = combine(
         loadingCounter.observable,
@@ -84,7 +84,7 @@ class HomeViewModel @Inject constructor(
             do{
 //                   Log.d("DEBUG_D","try again")
               checkConnection()
-                delay(2000)
+                delay(3000)
             }while(isActive)
         }
 //        appTasks.getDataServer()
@@ -98,6 +98,8 @@ class HomeViewModel @Inject constructor(
                 when(result){
                     is Resource.Success->{
                         this@HomeViewModel.networkConnection.emit(NetworkStatus.Available)
+                        if(marcacionCount.value > 0 ) appTasks.sendMarcaciones()
+                        getMarcarcaionCount()
                     }
                     is Resource.Error ->{
                         this@HomeViewModel.networkConnection.emit(NetworkStatus.Unavailable)
@@ -107,6 +109,56 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+
+    fun getMarcarcaionCount(){
+//      observerMarcacionesCount(ObserverMarcacionesCount.Params(Unit))
+        viewModelScope.launch {
+            val count = marcacionDao.getMarcacionCount()
+            this@HomeViewModel.marcacionCount.emit(count)
+        }
+    }
+
+
+
+//    @SuppressLint("NewApi")
+    fun updateCardHolders(){
+        viewModelScope.launch {
+//             supervisorScope {
+//            val cardHolders = async {
+                appTasks.sendMarcaciones()
+                updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(
+                    loadingCounter,
+                    uiMessageManager
+                )
+//            }
+//            val credentials = async {
+                updateCredentials(UpdateCredentials.Params(true)).collectStatus(
+                    loadingCounter,
+                    uiMessageManager
+                )
+//            getMarcarcaionCount()
+//            }
+//            val sendMarcaciones = async {
+//            }
+//                awaitAll(sendMarcaciones,cardHolders,credentials)
+//                await
+//                cardHolders.await()
+//                credentials.await()
+//                sendMarcaciones.await()
+//            }
+        }
+    }
+
+    fun clearMessage(id: Long) {
+        viewModelScope.launch {
+            uiMessageManager.clearMessage(id)
+        }
+    }
+
+
+
+}
 
 //    fun insertToDb() {
 //        viewModelScope.launch(Dispatchers.IO) {
@@ -180,50 +232,3 @@ class HomeViewModel @Inject constructor(
 ////        }
 //        }
 //    }
-
-
-    fun getMarcarcaionCount(){
-//      observerMarcacionesCount(ObserverMarcacionesCount.Params(Unit))
-        viewModelScope.launch {
-            val count = marcacionDao.getMarcacionCount()
-            this@HomeViewModel.marcacionCount.emit(count)
-        }
-    }
-
-
-
-//    @SuppressLint("NewApi")
-    fun updateCardHolders(){
-        viewModelScope.launch {
-            supervisorScope {
-            val cardHolders = async {
-                updateCardHolders(UpdateCardHolders.Params(true)).collectStatus(
-                    loadingCounter,
-                    uiMessageManager
-                )
-            }
-            val credentials = async {
-                updateCredentials(UpdateCredentials.Params(true)).collectStatus(
-                    loadingCounter,
-                    uiMessageManager
-                )
-            }
-            val sendMarcaciones = async {
-                appTasks.sendMarcaciones()
-            }
-                sendMarcaciones.await()
-                cardHolders.await()
-                credentials.await()
-            }
-        }
-    }
-
-    fun clearMessage(id: Long) {
-        viewModelScope.launch {
-            uiMessageManager.clearMessage(id)
-        }
-    }
-
-
-
-}

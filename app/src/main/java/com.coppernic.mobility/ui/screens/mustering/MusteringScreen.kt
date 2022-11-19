@@ -45,7 +45,6 @@ fun MusteringScreen(
             viewModel.clearMessage()
         })
     }
-
     state.musteringByCiudad?.data?.let { result ->
         state.totalCount?.let {
             val seguros = remember {
@@ -65,7 +64,6 @@ fun MusteringScreen(
                 })
             }
             Box(modifier = Modifier.fillMaxSize()) {
-
                 Column(
                     modifier = Modifier
                         .fillMaxSize()

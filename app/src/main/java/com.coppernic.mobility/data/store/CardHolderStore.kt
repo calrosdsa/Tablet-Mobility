@@ -82,7 +82,7 @@ object CardHolderModule{
                   imageDao.deleteAllImages()
               cardholderDao.deleteAll()
 //                  Log.d("DEBUG_D",entriesForImage.await().toString())
-              imageDao.insertAll(entriesForImage.await())
+               imageDao.insertAll(entriesForImage.await())
               cardholderDao.insertAll(entriesR.await())
 //                  appTasks.
 //              entries.map {

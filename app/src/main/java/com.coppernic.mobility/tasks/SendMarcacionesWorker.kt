@@ -79,7 +79,7 @@ class SendMarcacionesWorker @AssistedInject constructor(
                 },
                 encodeInQuery = false
             )
-            Log.d("SendRioWorker", response.receive() as String)
+//            Log.d("SendRioWorker", response.receive() as String)
             if (response.receive() as String == "Login successful") {
 //                Log.d("SendRioWorker", "${marcaciones.size} marcaciones pendientes")
                 //enviar encendido de puerta
@@ -148,11 +148,11 @@ class SendMarcacionesWorker @AssistedInject constructor(
                             estado = "enviado",
                         ))
                     } else {
-//                        Log.d("SendRioWorker", "envio de marcacion fallo - ${marcacion.cardCode},${marcacion.fecha}")
+                        Log.d("SendRioWorker", "envio de marcacion fallo - ${marcacion.cardCode},${marcacion.fecha}")
                     }
                 }
             } else {
-//                Log.d("SendRioWorker", "login fallo")
+                Log.d("SendRioWorker", "login fallo")
             }
         } catch (e: Exception){
             return Result.failure()
